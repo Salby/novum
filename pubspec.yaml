@@ -66,3 +66,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+  fonts:
+    - family: Eczar
+      fonts:
+        - asset: assets/fonts/Eczar-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Eczar-SemiBold.ttf
+          weight: 600
+    - family: Libre Franklin
+      fonts:
+        - asset: assets/fonts/LibreFranklin-Light.ttf
+          weight: 300
+        - asset: assets/fonts/LibreFranklin-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/LibreFranklin-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/LibreFranklin-Bold.ttf
+          weight: 700
