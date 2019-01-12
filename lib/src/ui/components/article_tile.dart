@@ -22,6 +22,7 @@ class ArticleTile extends StatelessWidget {
       ? FadeInImage.memoryNetwork(
         image: article.imageUrl,
         placeholder: kTransparentImage,
+        fit: BoxFit.cover,
       )
       : ImagePlaceholder('No image.'),
     published = Text(
@@ -128,14 +129,14 @@ class ArticleTile extends StatelessWidget {
     String timestamp;
     DateTime currentDate = DateTime.now();
     Duration difference = currentDate.difference(oldDate);
-    if (difference.inDays.floor() != 0.0) {
-      timestamp = "${difference.inDays.floor()}D";
-    } else if (difference.inHours.floor() != 0.0) {
-      timestamp = "${difference.inHours.floor()}M";
-    } else if (difference.inMinutes.floor() != 0.0) {
-      timestamp = "${difference.inMinutes.floor()}M";
-    } else {
-      timestamp = "Now";
+    if (difference.inSeconds < 60) {
+      timestamp = 'Now';
+    } else if (difference.inMinutes < 60) {
+      timestamp = '${difference.inMinutes}M';
+    } else if (difference.inHours < 24) {
+      timestamp = '${difference.inHours}H';
+    } else if (difference.inDays < 30) {
+      timestamp = '${difference.inDays}D';
     }
     return timestamp;
   }
