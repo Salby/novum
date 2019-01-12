@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './ui/theme/theme.dart';
-import './ui/screens/home.dart';
+import './ui/screens/browse.dart';
 
 final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.dark,
@@ -20,7 +20,13 @@ class NovumApp extends StatelessWidget {
       theme: kNovumTheme,
       title: 'Novum',
       routes: {
-        '/': (context) => Home(),
+        '/': (context) => Browse(title: 'Front page'),
+        '/business': (context) => Browse(title: 'Business', category: 'business'),
+        '/entertainment': (context) => Browse(title: 'Entertainment', category: 'entertainment'),
+        '/health': (context) => Browse(title: 'Health', category: 'health'),
+        '/science': (context) => Browse(title: 'Science', category: 'science'),
+        '/sports': (context) => Browse(title: 'Sports', category: 'sports'),
+        '/technology': (context) => Browse(title: 'Technology', category: 'technology'),
       },
     );
   }

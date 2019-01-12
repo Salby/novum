@@ -9,7 +9,7 @@ class NovumScaffold extends StatelessWidget {
   }) : assert(body != null);
 
   final String title;
-  final List<Widget> body;
+  final Widget body;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +20,7 @@ class NovumScaffold extends StatelessWidget {
 
           SliverAppBar(
             brightness: Theme.of(context).brightness,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             centerTitle: true,
             floating: true,
             title: _Title(title ?? 'Novum'),
@@ -34,7 +35,9 @@ class NovumScaffold extends StatelessWidget {
             ],
           ),
 
-          SliverList(delegate: SliverChildListDelegate(body)),
+          SliverList(delegate: SliverChildListDelegate([
+            body,
+          ])),
 
         ],
       ),

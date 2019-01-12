@@ -14,9 +14,9 @@ class NewsApiProvider {
     if (category != '') {
       parameter = 'category=$category&';
     } else {
-      parameter = 'country=us&';
+      parameter = '';
     }
-    final response = await client.get('https://newsapi.org/v2/top-headlines?${parameter}apiKey=$_apiKey');
+    final response = await client.get('https://newsapi.org/v2/top-headlines?country=us&${parameter}apiKey=$_apiKey');
     if (response.statusCode == 200) {
       // Call was successful. Parse JSON.
       return ArticleCollectionModel.fromJson(json.decode(response.body));
