@@ -15,6 +15,8 @@ ThemeData _buildNovumTheme() {
     primaryColorBrightness: Brightness.light,
     accentColor: kNovumPurple,
     accentColorBrightness: Brightness.dark,
+    
+    scaffoldBackgroundColor: kNovumWhite,
 
     splashColor: Colors.black12,
     highlightColor: Colors.black12,
