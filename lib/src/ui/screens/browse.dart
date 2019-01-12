@@ -22,11 +22,11 @@ class Browse extends StatelessWidget {
         stream: bloc.articles,
         builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data.articles[0].published);
             return ArticleListBuilder(snapshot.data.articles);
           }
           bloc.fetchArticles(category: category ?? '');
-          return Center(child: CircularProgressIndicator());
+          // TODO: Return proper skeleton-screen.
+          return Container();
         },
       ),
     );
