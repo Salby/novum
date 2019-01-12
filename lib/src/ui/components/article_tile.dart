@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
+import './image_placeholder.dart';
 
 class ArticleTile extends StatelessWidget {
 
@@ -17,7 +18,7 @@ class ArticleTile extends StatelessWidget {
     )),
     thumbnail = article.imageUrl != null
       ? Image.network(article.imageUrl, fit: BoxFit.cover)
-      : Container(color: Colors.transparent),
+      : ImagePlaceholder('No image.'),
     published = Text(
       _timestamp(article.published),
       style: Theme.of(context).textTheme.subtitle.copyWith(
@@ -58,7 +59,7 @@ class ArticleTile extends StatelessWidget {
         Flexible(
           flex: 1,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
 
               Padding(
