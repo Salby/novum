@@ -55,9 +55,12 @@ class ArticleTile extends StatelessWidget {
         // Thumbnail.
         Flexible(
           flex: 3,
-          child: AspectRatio(
-            aspectRatio: 4.0 / 3.0,
-            child: thumbnail,
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: Container(color: Colors.black26)),
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: thumbnail),
+            ],
           ),
         ),
 
@@ -109,9 +112,12 @@ class ArticleTile extends StatelessWidget {
           flex: 1,
           child: Padding(
             padding: EdgeInsets.only(left: 20.0),
-            child: AspectRatio(
-              aspectRatio: 1.0 / 1.0,
-              child: thumbnail,
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: Container(color: Colors.black26)),
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: thumbnail),
+              ],
             ),
           ),
         )

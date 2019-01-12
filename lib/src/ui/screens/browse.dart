@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../components/novum_scaffold.dart';
 import '../components/article_list_builder.dart';
+import '../components/article_list_skeleton.dart';
 import '../../models/article_collection_model.dart';
 import '../../blocs/article_collection_bloc.dart';
 
@@ -26,7 +27,8 @@ class Browse extends StatelessWidget {
           }
           bloc.fetchArticles(category: category ?? '');
           // TODO: Return proper skeleton-screen.
-          return Container();
+          //return Container();
+          return ArticleListSkeleton();
         },
       ),
     );
