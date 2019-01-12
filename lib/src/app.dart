@@ -19,7 +19,6 @@ class NovumApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: kNovumTheme,
       title: 'Novum',
-
       routes: {
         '/': (context) => Home(),
       },
