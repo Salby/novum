@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ArticleTile extends StatelessWidget {
 
@@ -17,7 +18,11 @@ class ArticleTile extends StatelessWidget {
       fontWeight: FontWeight.w500,
     )),
     thumbnail = article.imageUrl != null
-      ? Image.network(article.imageUrl, fit: BoxFit.cover)
+      //? Image.network(article.imageUrl, fit: BoxFit.cover)
+      ? FadeInImage.memoryNetwork(
+        image: article.imageUrl,
+        placeholder: kTransparentImage,
+      )
       : ImagePlaceholder('No image.'),
     published = Text(
       _timestamp(article.published),
