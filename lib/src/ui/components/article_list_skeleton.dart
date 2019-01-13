@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './article_tile.dart';
+import './skeleton_frame.dart';
 
 class ArticleListSkeleton extends StatelessWidget {
 
@@ -15,9 +16,19 @@ class ArticleListSkeleton extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         return ArticleTile(
-          title: Container(width: 200.0, height: 16.0, color: Colors.black26),
-          published: Container(width: 36.0, height: 16.0, color: Colors.black26),
-          thumbnail: Container(width: 100.0, height: 100.0, color: Colors.transparent),
+          title: index == 0
+            ? SkeletonFrame(width: 300.0, height: 16.0)
+            : Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SkeletonFrame(width: 300.0, height: 16.0),
+                SizedBox(height: 4.0),
+                SkeletonFrame(width: 150.0, height: 16.0),
+              ],
+            ),
+          published: SkeletonFrame(width: 36.0, height: 16.0),
+          thumbnail: Container(width: 100.0, height: 100.0),
           expanded: index == 0,
         );
       },

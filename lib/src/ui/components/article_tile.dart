@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
+import './skeleton_frame.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ArticleTile extends StatelessWidget {
@@ -58,7 +59,7 @@ class ArticleTile extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              AspectRatio(aspectRatio: 4.0 / 3.0, child: Container(color: Colors.black26)),
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: SkeletonFrame()),
               AspectRatio(aspectRatio: 4.0 / 3.0, child: thumbnail),
             ],
           ),
@@ -115,7 +116,7 @@ class ArticleTile extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                AspectRatio(aspectRatio: 1.0 / 1.0, child: Container(color: Colors.black26)),
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: SkeletonFrame()),
                 AspectRatio(aspectRatio: 1.0 / 1.0, child: thumbnail),
               ],
             ),
