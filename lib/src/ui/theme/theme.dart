@@ -37,6 +37,10 @@ ThemeData _buildNovumTheme() {
       color: kNovumPurple,
     ),
 
+    buttonTheme: base.buttonTheme.copyWith(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+    ),
+
   );
 
 }

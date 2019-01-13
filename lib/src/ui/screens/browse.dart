@@ -10,10 +10,12 @@ class Browse extends StatelessWidget {
   Browse({
     this.title,
     this.category,
+    this.tag,
   });
 
   final String title;
   final String category;
+  final String tag;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +28,6 @@ class Browse extends StatelessWidget {
             return ArticleListBuilder(snapshot.data.articles);
           }
           bloc.fetchArticles(category: category ?? '');
-          // TODO: Return proper skeleton-screen.
-          //return Container();
           return ArticleListSkeleton();
         },
       ),

@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
 import './skeleton_frame.dart';
+import '../screens/article.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ArticleTile extends StatelessWidget {
 
   ArticleTile({
+    this.tag,
+    this.article,
     this.title,
     this.thumbnail,
     this.published,
     this.expanded,
   });
 
-  ArticleTile.fromArticleModel(ArticleModel article, BuildContext context, {bool expanded: false}) :
-    title = Text(_cleanTitle(article.title), style: Theme.of(context).textTheme.body1.copyWith(
+  ArticleTile.fromArticleModel(String tag, ArticleModel article, BuildContext context, {bool expanded: false}) :
+    tag = tag,
+    article = article,
+    title = Text(cleanTitle(article.title), style: Theme.of(context).textTheme.body1.copyWith(
       fontSize: 16.0,
       fontWeight: FontWeight.w500,
     )),
@@ -25,6 +30,10 @@ class ArticleTile extends StatelessWidget {
         placeholder: kTransparentImage,
         fit: BoxFit.cover,
       )
+      /*? Image.network(
+        article.imageUrl,
+        fit: BoxFit.cover,
+      )*/
       : ImagePlaceholder('No image.'),
     published = Text(
       _timestamp(article.published),
@@ -35,16 +44,22 @@ class ArticleTile extends StatelessWidget {
     ),
     expanded = expanded;
 
+  final String tag;
+  final ArticleModel article;
   final Widget title;
   final Widget thumbnail;
   final Widget published;
   final bool expanded;
 
-  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: expanded ? _expandedTile() : _compactTile(),
+    return InkWell(
+      onTap: () => Navigator.push(context, MaterialPageRoute(
+        builder: (context) => Article(article: article, tag: tag),
+      )),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        child: expanded ? _expandedTile() : _compactTile(),
+      ),
     );
   }
 
@@ -60,7 +75,7 @@ class ArticleTile extends StatelessWidget {
             alignment: Alignment.center,
             children: <Widget>[
               AspectRatio(aspectRatio: 4.0 / 3.0, child: SkeletonFrame()),
-              AspectRatio(aspectRatio: 4.0 / 3.0, child: thumbnail),
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: Hero(tag: tag, child: thumbnail)),
             ],
           ),
         ),
@@ -117,7 +132,7 @@ class ArticleTile extends StatelessWidget {
               alignment: Alignment.center,
               children: <Widget>[
                 AspectRatio(aspectRatio: 1.0 / 1.0, child: SkeletonFrame()),
-                AspectRatio(aspectRatio: 1.0 / 1.0, child: thumbnail),
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: Hero(tag: tag, child: thumbnail)),
               ],
             ),
           ),
@@ -127,7 +142,7 @@ class ArticleTile extends StatelessWidget {
     );
   }
 
-  static String _cleanTitle(String originalTitle) {
+  static String cleanTitle(String originalTitle) {
     List<String> split = originalTitle.split(' - ');
     return split[0];
   }

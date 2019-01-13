@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './ui/theme/theme.dart';
 import './ui/screens/browse.dart';
+import 'package:flutter_villains/villain.dart';
 
 final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.dark,
@@ -16,6 +17,7 @@ class NovumApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(uiStyle);
     return MaterialApp(
+      navigatorObservers: [VillainTransitionObserver(),],
       debugShowCheckedModeBanner: false,
       theme: kNovumTheme,
       title: 'Novum',

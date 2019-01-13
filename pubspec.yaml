@@ -22,6 +22,9 @@ dependencies:
   rxdart: ^0.20.0
   http: ^0.12.0
   transparent_image: ^0.1.0
+  flutter_villains: ^1.2.0
+  share: ^0.5.3
+  flutter_custom_tabs: ^0.4.0
 
 dev_dependencies:
   flutter_test:

@@ -14,12 +14,13 @@ class ArticleListBuilder extends StatelessWidget {
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: articles.length,
-      padding: EdgeInsets.all(20.0),
+      padding: EdgeInsets.symmetric(vertical: 20.0),
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
       },
       itemBuilder: (BuildContext context, int index) {
         return ArticleTile.fromArticleModel(
+          index.toString(),
           articles[index],
           context,
           expanded: index == 0,
