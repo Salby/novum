@@ -14,7 +14,7 @@ class ArticleListBuilder extends StatelessWidget {
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: articles.length,
-      padding: EdgeInsets.symmetric(vertical: 20.0),
+      padding: EdgeInsets.only(top: 76.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
       },
