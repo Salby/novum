@@ -21,6 +21,26 @@ class NavigationDrawer extends StatelessWidget {
             DrawerItem(title: 'Science', route: '/science'),
             DrawerItem(title: 'Sports', route: '/sports'),
             DrawerItem(title: 'Technology', route: '/technology'),
+
+            Spacer(),
+
+            ListTile(
+              contentPadding: EdgeInsets.only(left: 34.0),
+              title: Row(
+                children: <Widget>[
+                  Text('Powered by ', style: TextStyle(
+                    fontFamily: 'Libre Franklin',
+                    fontSize: 14.0,
+                    height: 0.8,
+                    color: Colors.black54,
+                  )),
+                  Text('NewsApi.org', style: TextStyle(
+                    fontFamily: 'Eczar',
+                    fontSize: 14.0,
+                  )),
+                ],
+              ),
+            ),
             
           ],
         ),

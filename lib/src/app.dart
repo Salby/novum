@@ -17,7 +17,7 @@ class NovumApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(uiStyle);
     return MaterialApp(
-      navigatorObservers: [VillainTransitionObserver(),],
+      navigatorObservers: [VillainTransitionObserver()],
       debugShowCheckedModeBanner: false,
       theme: kNovumTheme,
       title: 'Novum',
