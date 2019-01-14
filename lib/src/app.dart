@@ -31,6 +31,7 @@ class NovumApp extends StatelessWidget {
         '/technology': (context) => Browse(title: 'Technology', category: 'technology'),
       },
     );
+
   }
 
 }

@@ -55,9 +55,9 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
               if (snapshot.hasData) {
                 return NotificationListener<ScrollUpdateNotification>(
                   onNotification: (notification) {
-                    if (notification.scrollDelta < 0) {
+                    if (notification.scrollDelta < 0 && controller.isCompleted) {
                       controller.reverse();
-                    } else if (notification.scrollDelta > 0) {
+                    } else if (notification.scrollDelta > 0 && controller.isDismissed) {
                       controller.forward();
                     }
                   },
