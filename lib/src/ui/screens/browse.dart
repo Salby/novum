@@ -71,11 +71,13 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
           Align(
             alignment: Alignment.topCenter,
-            child: NovumAppBar(
-              title: widget.title,
-              context: context,
-              controller: controller,
-            ),
+            child: MediaQuery.of(context).size.width == 0.0
+              ? SafeArea(child: Container(width: double.infinity, height: 56.0))
+              : NovumAppBar(
+                title: widget.title,
+                context: context,
+                controller: controller,
+              ),
           ),
 
         ],

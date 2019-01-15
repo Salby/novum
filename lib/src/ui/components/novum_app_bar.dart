@@ -6,12 +6,11 @@ class NovumAppBar extends StatefulWidget {
     this.title,
     @required this.controller,
     @required this.context,
-  }) : viewportWidth = MediaQuery.of(context).size.width;
+  });
 
   final String title;
   final AnimationController controller;
   final BuildContext context;
-  final double viewportWidth;
 
   @override
   NovumAppBarState createState() => NovumAppBarState();
@@ -24,9 +23,11 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
   Animation<double> opacity2;
   Animation<double> size;
   Animation<BorderRadius> radius;
+  double vwidth;
 
   @override
   void initState() {
+    vwidth = MediaQuery.of(widget.context).size.width;
     super.initState();
     /// First opacity animation.
     /// 
@@ -70,7 +71,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
     /// This animation is used to animate the width of the appBar
     /// when scrolling up/down.
     size = Tween<double>(
-      begin: widget.viewportWidth,
+      begin: vwidth,
       end: 112.0,
     ).animate(CurvedAnimation(
       parent: widget.controller,
@@ -99,7 +100,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        width: widget.viewportWidth,
+        width: vwidth,
         height: 56.0,
         child: Stack(
           children: <Widget>[
