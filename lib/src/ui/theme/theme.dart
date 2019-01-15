@@ -18,7 +18,7 @@ ThemeData _buildNovumTheme() {
     
     scaffoldBackgroundColor: kNovumWhite,
 
-    dividerColor: Colors.black45,
+    dividerColor: Colors.black26,
 
     splashColor: Colors.black12,
     highlightColor: Colors.black12,

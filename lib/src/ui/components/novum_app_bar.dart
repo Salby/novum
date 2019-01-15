@@ -6,11 +6,13 @@ class NovumAppBar extends StatefulWidget {
     this.title,
     @required this.controller,
     @required this.context,
+    this.elevation,
   });
 
   final String title;
   final AnimationController controller;
   final BuildContext context;
+  final double elevation;
 
   @override
   NovumAppBarState createState() => NovumAppBarState();
@@ -110,7 +112,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               height: 56.0,
               child: Material(
                 color: Theme.of(context).primaryColor,
-                elevation: 4.0,
+                elevation: widget.elevation ?? 4.0,
                 shape: BeveledRectangleBorder(
                   borderRadius: radius.value,
                 ),
