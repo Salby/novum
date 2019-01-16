@@ -31,7 +31,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     controller = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 650),
       vsync: this,
     )
       ..addListener(() { setState(() {}); })

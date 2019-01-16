@@ -13,6 +13,10 @@ class ArticleCollectionBloc {
     ArticleCollectionModel articleCollection = await _repository.fetchArticles(category: category);
     _articleFetcher.sink.add(articleCollection);
   }
+  searchArticles(String query) async {
+    ArticleCollectionModel articleCollection = await _repository.searchArticles(query);
+    _articleFetcher.sink.add(articleCollection);
+  }
 
   dispose() {
     _articleFetcher.close();

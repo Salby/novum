@@ -4,13 +4,19 @@ import './skeleton_frame.dart';
 
 class ArticleListSkeleton extends StatelessWidget {
 
+  ArticleListSkeleton({
+    this.expanded: true,
+  });
+
+  final bool expanded;
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: 3,
-      padding: EdgeInsets.only(top: 76.0),
+      padding: EdgeInsets.only(top: 90.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
       },
@@ -30,7 +36,7 @@ class ArticleListSkeleton extends StatelessWidget {
             ),
           published: SkeletonFrame(width: 36.0, height: 16.0),
           thumbnail: Container(width: 100.0, height: 100.0),
-          expanded: index == 0,
+          expanded: expanded && index == 0,
         );
       },
     );

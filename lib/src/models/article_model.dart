@@ -7,7 +7,7 @@ class ArticleModel {
     source = parsedJson['source']['name'],
     url = parsedJson['url'],
     imageUrl = parsedJson['urlToImage'],
-    published = DateTime.parse(parsedJson['publishedAt']),
+    published = _parsedDate(parsedJson['publishedAt']),
     content = parsedJson['content'];
 
   final String author;
@@ -18,5 +18,15 @@ class ArticleModel {
   final String imageUrl;
   final DateTime published;
   final String content;
+
+  static DateTime _parsedDate(String timestamp) {
+    DateTime parsed;
+    try {
+      parsed = DateTime.parse(timestamp);
+    } catch(e) {
+      parsed = DateTime.now();
+    }
+    return parsed;
+  }
 
 }

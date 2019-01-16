@@ -4,9 +4,12 @@ import './article_tile.dart';
 
 class ArticleListBuilder extends StatelessWidget {
 
-  ArticleListBuilder(this.articles);
+  ArticleListBuilder(this.articles, {
+    this.expanded: true,
+  });
 
   final List<ArticleModel> articles;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,7 @@ class ArticleListBuilder extends StatelessWidget {
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: articles.length,
-      padding: EdgeInsets.only(top: 76.0),
+      padding: EdgeInsets.only(top: 90.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
       },
@@ -23,7 +26,7 @@ class ArticleListBuilder extends StatelessWidget {
           index.toString(),
           articles[index],
           context,
-          expanded: index == 0,
+          expanded: expanded && index == 0,
         );
       },
     );
