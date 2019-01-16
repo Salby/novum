@@ -4,9 +4,12 @@ import './article_tile.dart';
 
 class ArticleListBuilder extends StatelessWidget {
 
-  ArticleListBuilder(this.articles);
+  ArticleListBuilder(this.articles, {
+    this.expanded: true,
+  });
 
   final List<ArticleModel> articles;
+  final bool expanded;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class ArticleListBuilder extends StatelessWidget {
           index.toString(),
           articles[index],
           context,
-          expanded: index == 0,
+          expanded: expanded && index == 0,
         );
       },
     );

@@ -6,6 +6,9 @@ class Repository {
 
   final newsApiProvider = NewsApiProvider();
 
+  Future<ArticleCollectionModel> searchArticles(String query) async {
+    return newsApiProvider.searchArticles(query);
+  }
   Future<ArticleCollectionModel> fetchArticles({String category: ''}) async {
     return newsApiProvider.fetchArticles(category: category);
   }

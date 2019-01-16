@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './ui/theme/theme.dart';
 import './ui/screens/browse.dart';
+import './ui/screens/search.dart';
 import 'package:flutter_villains/villain.dart';
 
 final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
@@ -23,6 +24,7 @@ class NovumApp extends StatelessWidget {
       title: 'Novum',
       routes: {
         '/': (context) => Browse(title: 'Front page'),
+        '/search': (context) => Search(),
         '/business': (context) => Browse(title: 'Business', category: 'business'),
         '/entertainment': (context) => Browse(title: 'Entertainment', category: 'entertainment'),
         '/health': (context) => Browse(title: 'Health', category: 'health'),

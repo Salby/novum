@@ -160,12 +160,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
                 child: IconButton(
                   color: Theme.of(context).accentColor,
                   icon: Icon(Icons.search),
-                  onPressed: () {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('You tapped the search button!'),
-                      duration: Duration(milliseconds: 1500),
-                    ));
-                  },
+                  onPressed: () => Navigator.pushNamed(context, '/search'),
                 ),
               ),
             ),
