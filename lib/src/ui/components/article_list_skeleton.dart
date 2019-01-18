@@ -6,16 +6,18 @@ class ArticleListSkeleton extends StatelessWidget {
 
   ArticleListSkeleton({
     this.expanded: true,
+    this.itemCount,
   });
 
   final bool expanded;
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: 3,
+      itemCount: itemCount ?? 3,
       padding: EdgeInsets.only(top: 90.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());

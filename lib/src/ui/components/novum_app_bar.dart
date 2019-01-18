@@ -158,7 +158,6 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               child: Align(
                 alignment: Alignment.centerRight,
                 child: IconButton(
-                  color: Theme.of(context).accentColor,
                   icon: Icon(Icons.search),
                   onPressed: () => Navigator.pushNamed(context, '/search'),
                 ),

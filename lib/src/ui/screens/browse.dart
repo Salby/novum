@@ -61,11 +61,20 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                       controller.forward();
                     }
                   },
-                  child: ArticleListBuilder(snapshot.data.articles)
+                  child: ArticleListBuilder(
+                    snapshot.data.articles,
+                    itemCount: widget.category == null
+                      ? 5
+                      : null,
+                  ),
                 );
               }
               bloc.fetchArticles(category: widget.category ?? '');
-              return ArticleListSkeleton();
+              return ArticleListSkeleton(
+                itemCount: widget.category == null
+                  ? 5
+                  : null,
+              );
             }
           ),
 

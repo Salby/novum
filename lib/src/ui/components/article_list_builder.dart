@@ -6,17 +6,19 @@ class ArticleListBuilder extends StatelessWidget {
 
   ArticleListBuilder(this.articles, {
     this.expanded: true,
+    this.itemCount,
   });
 
   final List<ArticleModel> articles;
   final bool expanded;
+  final int itemCount;
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
-      itemCount: articles.length,
+      itemCount: itemCount ?? articles.length,
       padding: EdgeInsets.only(top: 90.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
