@@ -7,10 +7,12 @@ class ArticleListSkeleton extends StatelessWidget {
   ArticleListSkeleton({
     this.expanded: true,
     this.itemCount,
+    this.padding,
   });
 
   final bool expanded;
   final int itemCount;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class ArticleListSkeleton extends StatelessWidget {
       shrinkWrap: true,
       physics: ClampingScrollPhysics(),
       itemCount: itemCount ?? 3,
-      padding: EdgeInsets.only(top: 90.0),
+      padding: padding ?? EdgeInsets.only(top: 90.0),
       separatorBuilder: (BuildContext context, int index) {
         return Padding(padding: EdgeInsets.symmetric(horizontal: 20.0), child: Divider());
       },

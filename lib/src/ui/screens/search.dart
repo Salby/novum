@@ -41,6 +41,7 @@ class SearchBodyState extends State<SearchBody> {
       width: 1.0,
       color: Theme.of(context).dividerColor,
     ));
+    final padding = EdgeInsets.symmetric(vertical: 20.0);
     return ListView(
       children: <Widget>[
 
@@ -67,12 +68,16 @@ class SearchBodyState extends State<SearchBody> {
           stream: searchBloc.articles,
           builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
             if (snapshot.hasData) {
-              return ArticleListBuilder(snapshot.data.articles, expanded: false);
+              return ArticleListBuilder(
+                snapshot.data.articles, 
+                expanded: false,
+                padding: padding
+              );
             }
             if (textController.value.text.isNotEmpty) {
               return ArticleListSkeleton(expanded: false);
             }
-            return Container();
+            return Container(padding: padding);
           },
         ),
 
