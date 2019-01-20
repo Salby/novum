@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './logo.dart';
 
 class NovumAppBar extends StatefulWidget {
 
@@ -135,10 +136,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: EdgeInsets.only(left: 64.0),
-                  child: Text('N', style: Theme.of(context).textTheme.display1.copyWith(
-                    fontSize: 26.0,
-                    height: 1.2,
-                  )),
+                  child: Logo.compact(),
                 ),
               ),
             ),
@@ -148,7 +146,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               opacity: opacity.value,
               child: Align(
                 alignment: Alignment.center,
-                child: _Title(widget.title),
+                child: Logo.full(title: widget.title),
               ),
             ),
 
@@ -174,24 +172,6 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
   void dispose() {
     widget.controller.dispose();
     super.dispose();
-  }
-
-}
-
-class _Title extends StatelessWidget {
-
-  _Title(this.title);
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: Theme.of(context).textTheme.display1.copyWith(
-        fontSize: 24.0,
-      ),
-    ); 
   }
 
 }

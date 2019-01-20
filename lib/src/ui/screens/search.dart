@@ -3,6 +3,7 @@ import '../../models/article_collection_model.dart';
 import '../../blocs/article_collection_bloc.dart';
 import '../components/article_list_builder.dart';
 import '../components/article_list_skeleton.dart';
+import '../components/logo.dart';
 
 class Search extends StatelessWidget {
 
@@ -12,6 +13,7 @@ class Search extends StatelessWidget {
       appBar: AppBar(
         brightness: Theme.of(context).brightness,
         elevation: 0.0,
+        title: Logo.full(),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.pop(context),
@@ -43,6 +45,8 @@ class SearchBodyState extends State<SearchBody> {
     ));
     final padding = EdgeInsets.symmetric(vertical: 20.0);
     return ListView(
+      physics: ClampingScrollPhysics(),
+      shrinkWrap: true,
       children: <Widget>[
 
         Padding(
