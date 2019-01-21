@@ -155,9 +155,17 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               opacity: opacity.value,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () => Navigator.pushNamed(context, '/search'),
+                child: Padding(
+                  padding: EdgeInsets.only(right: 4.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(28.0),
+                    child: Material(
+                      child: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () => Navigator.pushNamed(context, '/search'),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
