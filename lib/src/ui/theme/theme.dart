@@ -41,6 +41,8 @@ ThemeData _buildNovumTheme() {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
     ),
 
+    dialogBackgroundColor: Colors.white70,
+
   );
 
 }

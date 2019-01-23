@@ -99,7 +99,8 @@ class DrawerItem extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
       ),
-      onTap: () => Navigator.of(context).pushNamed(route),
+      //onTap: () => Navigator.of(context).pushNamed(route),
+      onTap: () => Navigator.of(context).pushReplacementNamed(route),
     );
   }
 

@@ -26,7 +26,6 @@ class ArticleListSkeleton extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         return ArticleTile(
-          tag: index.toString(),
           title: index == 0
             ? SkeletonFrame(width: 300.0, height: 16.0)
             : Column(

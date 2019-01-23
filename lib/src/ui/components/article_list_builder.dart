@@ -27,7 +27,6 @@ class ArticleListBuilder extends StatelessWidget {
       },
       itemBuilder: (BuildContext context, int index) {
         return ArticleTile.fromArticleModel(
-          index.toString(),
           articles[index],
           context,
           expanded: expanded && index == 0,

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
 import './skeleton_frame.dart';
+import './fade_route.dart';
 import '../screens/article.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ArticleTile extends StatelessWidget {
 
   ArticleTile({
-    this.tag,
     this.article,
     this.title,
     this.thumbnail,
@@ -16,8 +16,7 @@ class ArticleTile extends StatelessWidget {
     this.expanded,
   });
 
-  ArticleTile.fromArticleModel(String tag, ArticleModel article, BuildContext context, {bool expanded: false}) :
-    tag = tag,
+  ArticleTile.fromArticleModel(ArticleModel article, BuildContext context, {bool expanded: false}) :
     article = article,
     title = Text(cleanTitle(article.title), style: Theme.of(context).textTheme.body1.copyWith(
       fontSize: 16.0,
@@ -40,7 +39,6 @@ class ArticleTile extends StatelessWidget {
     ),
     expanded = expanded;
 
-  final String tag;
   final ArticleModel article;
   final Widget title;
   final Widget thumbnail;
@@ -49,9 +47,7 @@ class ArticleTile extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(context, MaterialPageRoute(
-        builder: (context) => Article(article: article, tag: tag),
-      )),
+      onTap: () => Navigator.push(context, FadeRoute(Article(article))),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: expanded ? _expandedTile() : _compactTile(),
@@ -70,8 +66,8 @@ class ArticleTile extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              AspectRatio(aspectRatio: 4.0 / 3.0, child: /*SkeletonFrame()*/Container(color: Colors.black26)),
-              AspectRatio(aspectRatio: 4.0 / 3.0, child: Hero(tag: tag, child: thumbnail)),
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: Container(color: Colors.black26)),
+              AspectRatio(aspectRatio: 4.0 / 3.0, child: thumbnail),
             ],
           ),
         ),
@@ -127,8 +123,8 @@ class ArticleTile extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                AspectRatio(aspectRatio: 1.0 / 1.0, child: /*SkeletonFrame()*/Container(color: Colors.black26)),
-                AspectRatio(aspectRatio: 1.0 / 1.0, child: Hero(tag: tag, child: thumbnail)),
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: Container(color: Colors.black26)),
+                AspectRatio(aspectRatio: 1.0 / 1.0, child: thumbnail),
               ],
             ),
           ),
