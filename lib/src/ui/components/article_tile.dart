@@ -30,10 +30,6 @@ class ArticleTile extends StatelessWidget {
         placeholder: kTransparentImage,
         fit: BoxFit.cover,
       )
-      /*? Image.network(
-        article.imageUrl,
-        fit: BoxFit.cover,
-      )*/
       : ImagePlaceholder('No image.'),
     published = Text(
       _timestamp(article.published),

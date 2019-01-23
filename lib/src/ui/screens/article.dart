@@ -23,16 +23,7 @@ class Article extends StatelessWidget {
 
           _content(context),
 
-          Villain(
-            villainAnimation: VillainAnimation.fromTop(
-              curve: Curves.easeOut,
-              offset: 56.0,
-              from: Duration(milliseconds: 300),
-              to: Duration(milliseconds: 800),
-            ),
-            animateExit: true,
-            child: _actions(context)
-          ),
+          _actions(context),
 
         ],
       ),
@@ -46,22 +37,31 @@ class Article extends StatelessWidget {
         child: Container(
           width: 56.0,
           height: 56.0,
-          child: Material(
-            elevation: 4.0,
-            shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0)),
+          child: Villain(
+            villainAnimation: VillainAnimation.fromTop(
+              curve: Curves.easeOut,
+              offset: 56.0,
+              from: Duration(milliseconds: 500),
+              to: Duration(milliseconds: 1000),
             ),
-            child: Row(
-              children: <Widget>[
+            animateExit: true,
+            child: Material(
+              elevation: 4.0,
+              shape: BeveledRectangleBorder(
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0)),
+              ),
+              child: Row(
+                children: <Widget>[
 
-                IconButton(
-                  icon: Theme.of(context).platform == TargetPlatform.iOS
-                    ? Icon(Icons.arrow_back_ios)
-                    : Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                  IconButton(
+                    icon: Theme.of(context).platform == TargetPlatform.iOS
+                      ? Icon(Icons.arrow_back_ios)
+                      : Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                  ),
 
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -75,7 +75,7 @@ class Article extends StatelessWidget {
       children: <Widget>[
 
         // Article image.
-      Hero(
+        Hero(
           tag: tag,
           child: FadeInImage.memoryNetwork(
             image: article.imageUrl,
