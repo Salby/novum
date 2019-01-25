@@ -44,11 +44,11 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
       parent: widget.controller,
       curve: Interval(
         0.0, 0.3,
-        curve: Curves.easeIn,
+        curve: Curves.easeOut,
       ),
       reverseCurve: Interval(
         0.0, 0.3,
-        curve: Curves.easeOut,
+        curve: Curves.easeIn,
       ),
     ));
     /// Second opacity animation.
@@ -62,11 +62,11 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
       parent: widget.controller,
       curve: Interval(
         0.7, 1.0,
-        curve: Curves.easeOut,
+        curve: Curves.easeIn,
       ),
       reverseCurve: Interval(
         0.7, 1.0,
-        curve: Curves.easeIn,
+        curve: Curves.easeOut,
       ),
     ));
     /// Size animation.
@@ -80,7 +80,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
       parent: widget.controller,
       curve: Interval(
         0.3, 1.0,
-        curve: Curves.easeInOut,
+        curve: Curves.fastOutSlowIn,
       ),
     ));
     /// Radius animation.
@@ -160,6 +160,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(28.0),
                     child: Material(
+                      color: Colors.transparent,
                       child: IconButton(
                         icon: Icon(Icons.search),
                         onPressed: () => Navigator.pushNamed(context, '/search'),

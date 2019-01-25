@@ -16,7 +16,7 @@ class Article extends StatelessWidget {
     return Scaffold(
       body: Villain(
         villainAnimation:VillainAnimation.fromBottom(
-          curve: Curves.easeOut,
+          curve: Curves.fastOutSlowIn,
           relativeOffset: 0.05,
           from: Duration(milliseconds: 200),
           to: Duration(milliseconds: 400),
