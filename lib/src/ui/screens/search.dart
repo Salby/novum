@@ -5,90 +5,59 @@ import '../components/article_list_builder.dart';
 import '../components/article_list_skeleton.dart';
 import '../components/logo.dart';
 
-class Search extends StatelessWidget {
+class Search extends StatefulWidget {
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        brightness: Theme.of(context).brightness,
-        elevation: 0.0,
-        title: Logo.full(),
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SearchBody(),
-    );
-  }
+  SearchState createState() => SearchState();
 
 }
 
-class SearchBody extends StatefulWidget {
+class SearchState extends State<Search> {
 
-  @override
-  SearchBodyState createState() => SearchBodyState();
-
-}
-
-class SearchBodyState extends State<SearchBody> {
-
-  TextEditingController textController = TextEditingController();
+  final textController = TextEditingController();
   /// Create new instance of [ArticleCollectionBloc] that is only used
   /// in search to avoid changing the content of the browse screens.
   final searchBloc = ArticleCollectionBloc();
 
   @override
   Widget build(BuildContext context) {
-    final UnderlineInputBorder inputBorder = UnderlineInputBorder(borderSide: BorderSide(
-      width: 1.0,
-      color: Theme.of(context).dividerColor,
-    ));
-    final padding = EdgeInsets.symmetric(vertical: 20.0);
-    return ListView(
-      physics: ClampingScrollPhysics(),
-      shrinkWrap: true,
-      children: <Widget>[
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
 
-        Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-          child: TextField(
-            autofocus: true,
-            cursorColor: Theme.of(context).accentColor,
-            style: Theme.of(context).textTheme.body1.copyWith(
-              fontSize: 24.0,
+          SliverAppBar(
+            brightness: Theme.of(context).brightness,
+            centerTitle: true,
+            floating: true,
+            pinned: true,
+            title: Logo.full(),
+            leading: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () => Navigator.pop(context),
             ),
-            decoration: InputDecoration(
-              focusedBorder: inputBorder,
-              border: inputBorder,
-              hasFloatingPlaceholder: false,
-              hintText: 'Search',
+            // App bar bottom containing search field.
+            bottom: PreferredSize(
+              preferredSize: Size(double.infinity, 73.0),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 16.0),
+                child: _SearchField(
+                  controller: textController,
+                  onChanged: (value) => _handleChange(value),
+                ),
+              ),
             ),
-            controller: textController,
-            onChanged: (value) => _handleChange(value),
           ),
-        ),
 
-        // Build list of results.
-        StreamBuilder(
-          stream: searchBloc.articles,
-          builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
-            if (snapshot.hasData) {
-              return ArticleListBuilder(
-                snapshot.data.articles, 
-                expanded: false,
-                padding: padding
-              );
-            }
-            if (textController.value.text.isNotEmpty) {
-              return ArticleListSkeleton(expanded: false);
-            }
-            return Container(padding: padding);
-          },
-        ),
+          // List of search results.
+          SliverList(
+            delegate: SliverChildListDelegate([
+              _Results(bloc: searchBloc, controller: textController),
+            ]),
+          ),
 
-      ],
+        ],
+      ),
     );
   }
 
@@ -100,6 +69,74 @@ class SearchBodyState extends State<SearchBody> {
         searchBloc.searchArticles(query);
       }
     }
+  }
+
+}
+
+class _SearchField extends StatelessWidget {
+
+  _SearchField({
+    @required this.controller,
+    this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final Function onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final UnderlineInputBorder inputBorder = UnderlineInputBorder(borderSide: BorderSide(
+      width: 1.0,
+      color: Theme.of(context).dividerColor,
+    ));
+    return TextField(
+      autofocus: true,
+      cursorColor: Theme.of(context).accentColor,
+      style: Theme.of(context).textTheme.body1.copyWith(
+        fontSize: 24.0,
+      ),
+      decoration: InputDecoration(
+        focusedBorder: inputBorder,
+        border: inputBorder,
+        hasFloatingPlaceholder: false,
+        hintText: 'Search',
+      ),
+      controller: controller,
+      onChanged: (value) => onChanged(value),
+    );
+  }
+
+}
+
+class _Results extends StatelessWidget {
+
+  _Results({
+    @required this.controller,
+    @required this.bloc,
+  });
+
+  final TextEditingController controller;
+  final ArticleCollectionBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    final padding = EdgeInsets.symmetric(vertical: 20.0);
+    return StreamBuilder(
+      stream: bloc.articles,
+      builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
+        if (snapshot.hasData) {
+          return ArticleListBuilder(
+            snapshot.data.articles, 
+            expanded: false,
+            padding: padding
+          );
+        }
+        if (controller.value.text.isNotEmpty) {
+          return ArticleListSkeleton(expanded: false);
+        }
+        return Container(padding: padding);
+      },
+    );
   }
 
 }
