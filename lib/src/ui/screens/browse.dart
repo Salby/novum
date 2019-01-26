@@ -11,12 +11,10 @@ class Browse extends StatefulWidget {
   Browse({
     this.title,
     this.category,
-    this.tag,
   });
 
   final String title;
   final String category;
-  final String tag;
 
   @override
   BrowseState createState() => BrowseState();
@@ -53,11 +51,16 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
             stream: bloc.articles,
             builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
               if (snapshot.hasData) {
+                /// The NotificationListener listens for scroll updates
+                /// and determines if the app bar should expand or collapse
+                /// depending on the scroll direction.
                 return NotificationListener<ScrollUpdateNotification>(
                   onNotification: (notification) {
                     if (notification.scrollDelta < 0 && controller.isCompleted) {
+                      // Expand.
                       controller.reverse();
                     } else if (notification.scrollDelta > 0 && controller.isDismissed) {
+                      // Collapse.
                       controller.forward();
                     }
                   },

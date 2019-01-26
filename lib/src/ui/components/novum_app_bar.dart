@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './logo.dart';
 
+/// Custom appBar with expanding/collapsing animation controlled
+/// from an AnimationController outside the class.
 class NovumAppBar extends StatefulWidget {
 
   NovumAppBar({
@@ -10,9 +12,13 @@ class NovumAppBar extends StatefulWidget {
     this.elevation,
   });
 
+  /// The title of the app bar. This will be hidden in favor of
+  /// a compact logo when the app bar is collapsed.
   final String title;
   final AnimationController controller;
   final BuildContext context;
+  /// The size of the shadow underneath the app bar material.
+  /// Defaults to [4.0].
   final double elevation;
 
   @override
@@ -30,6 +36,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
 
   @override
   void initState() {
+    // Use the width of the viewport to animate the app bar.
     vwidth = MediaQuery.of(widget.context).size.width;
     super.initState();
     /// First opacity animation.
@@ -108,6 +115,9 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
         child: Stack(
           children: <Widget>[
 
+            /// Contains the app bar material and the menu button.
+            /// 
+            /// Has a cut shape when collapsed.
             Container(
               width: size.value,
               height: 56.0,
@@ -129,7 +139,9 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               ),
             ),
 
-            // App logo component.
+            /// App logo component.
+            /// 
+            /// This logo is hidden when the app bar is expanded.
             Opacity(
               opacity: opacity2.value,
               child: Align(
@@ -141,7 +153,9 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               ),
             ),
 
-            // Title component.
+            /// Title component.
+            /// 
+            /// The title is hidden when the app bar is collapsed.
             Opacity(
               opacity: opacity.value,
               child: Align(
@@ -150,7 +164,9 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
               ),
             ),
 
-            // Search button.
+            /// Search button.
+            /// 
+            /// This button is hidden when the app bar is collapsed.
             Opacity(
               opacity: opacity.value,
               child: Align(

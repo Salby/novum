@@ -35,6 +35,8 @@ class SearchBody extends StatefulWidget {
 class SearchBodyState extends State<SearchBody> {
 
   TextEditingController textController = TextEditingController();
+  /// Create new instance of [ArticleCollectionBloc] that is only used
+  /// in search to avoid changing the content of the browse screens.
   final searchBloc = ArticleCollectionBloc();
 
   @override
@@ -68,6 +70,7 @@ class SearchBodyState extends State<SearchBody> {
           ),
         ),
 
+        // Build list of results.
         StreamBuilder(
           stream: searchBloc.articles,
           builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
