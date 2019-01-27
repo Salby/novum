@@ -108,6 +108,7 @@ class _SearchField extends StatelessWidget {
 
 }
 
+/// Builds list of search results from [bloc.articles].
 class _Results extends StatelessWidget {
 
   _Results({
@@ -125,15 +126,18 @@ class _Results extends StatelessWidget {
       stream: bloc.articles,
       builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
         if (snapshot.hasData) {
+          // Build list of search results.
           return ArticleListBuilder(
             snapshot.data.articles, 
             expanded: false,
             padding: padding
           );
         }
+        // Return placeholder skeleton.
         if (controller.value.text.isNotEmpty) {
           return ArticleListSkeleton(expanded: false);
         }
+        // Show empty container if there is no current query.
         return Container(padding: padding);
       },
     );
