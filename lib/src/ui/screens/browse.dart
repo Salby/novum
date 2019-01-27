@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../navigation.dart';
+import '../components/navigation_drawer.dart';
 import '../components/novum_app_bar.dart';
 import '../components/article_list_builder.dart';
 import '../components/article_list_skeleton.dart';
