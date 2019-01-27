@@ -81,25 +81,27 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Route currentRoute;
+    bool currentRoute;
     Navigator.popUntil(context, (route) {
-      currentRoute = route;
+      currentRoute = route.settings.name == this.route;
       return true;
     });
     return ListTile(
-      enabled: currentRoute.settings.name != route,
-      contentPadding: EdgeInsets.only(left: 34.0),
+      enabled: !currentRoute,
+      contentPadding: EdgeInsets.only(left: 34.0, right: 16.0),
       title: Text(
         title,
         style: Theme.of(context).textTheme.subtitle.copyWith(
-          color: currentRoute.settings.name == route
+          color: currentRoute
             ? Colors.black54
             : Colors.black87,
           fontSize: 16.0,
           fontWeight: FontWeight.w700,
         ),
       ),
-      //onTap: () => Navigator.of(context).pushNamed(route),
+      trailing: currentRoute
+        ? Icon(Icons.fiber_manual_record, color: Colors.black26)
+        : null,
       onTap: () => Navigator.of(context).pushReplacementNamed(route),
     );
   }
