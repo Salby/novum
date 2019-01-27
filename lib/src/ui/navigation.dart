@@ -100,7 +100,11 @@ class DrawerItem extends StatelessWidget {
         ),
       ),
       trailing: currentRoute
-        ? Icon(Icons.fiber_manual_record, color: Colors.black26)
+        ? Icon(
+          Icons.fiber_manual_record,
+          color: Colors.black38,
+          size: 12.0,
+        )
         : null,
       onTap: () => Navigator.of(context).pushReplacementNamed(route),
     );
