@@ -88,7 +88,7 @@ class DrawerItem extends StatelessWidget {
     });
     return ListTile(
       enabled: !currentRoute,
-      contentPadding: EdgeInsets.only(left: 34.0, right: 16.0),
+      contentPadding: EdgeInsets.only(left: 34.0, right: 34.0),
       title: Text(
         title,
         style: Theme.of(context).textTheme.subtitle.copyWith(
