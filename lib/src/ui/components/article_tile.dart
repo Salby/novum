@@ -46,8 +46,17 @@ class ArticleTile extends StatelessWidget {
   final bool expanded;
 
   Widget build(BuildContext context) {
+    Route currentRoute;
+    Navigator.popUntil(context, (route) {
+      currentRoute = route;
+      return true;
+    });
+    final String category = currentRoute.settings.name != '/search'
+                          && currentRoute.settings.name != null
+      ? currentRoute.settings.name.replaceAll('/', '')
+      : null;
     return InkWell(
-      onTap: () => Navigator.push(context, FadeRoute(Article(article))),
+      onTap: () => Navigator.push(context, FadeRoute(Article(article, category: category))),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: expanded ? _expandedTile() : _compactTile(),

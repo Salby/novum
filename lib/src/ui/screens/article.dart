@@ -7,15 +7,17 @@ import 'package:share/share.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class Article extends StatelessWidget {
-
-  Article(this.article) : assert(article != null);
+  Article(this.article, {
+    this.category
+  }) : assert(article != null);
 
   final ArticleModel article;
+  final String category;
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Villain(
-        villainAnimation:VillainAnimation.fromBottom(
+        villainAnimation: VillainAnimation.fromBottom(
           curve: Curves.fastOutSlowIn,
           relativeOffset: 0.05,
           from: Duration(milliseconds: 200),
@@ -26,9 +28,18 @@ class Article extends StatelessWidget {
         child: Stack(
           children: <Widget>[
 
-            _content(context),
+            _Content(article, category: category ?? null),
 
-            _actions(context),
+            _BottomSheet(url: article.url),
+            
+            _Actions(actions: [
+              IconButton(
+                icon: Theme.of(context).platform == TargetPlatform.iOS
+                  ? Icon(Icons.arrow_back_ios)
+                  : Icon(Icons.arrow_back),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ]),
 
           ],
         ),
@@ -36,29 +47,156 @@ class Article extends StatelessWidget {
     );
   }
 
-  Widget _actions(BuildContext context) {
+}
+
+class _Content extends StatelessWidget {
+
+  _Content(this.article, {
+    this.category,
+  }) : assert(article != null);
+
+  final ArticleModel article;
+  final String category;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+
+        image(),
+
+        articleCategory(context),
+
+        title(context),
+
+        preview(context),
+
+      ],
+    );
+  }
+
+  Widget image() {
+    if (article.imageUrl != null) {
+      return FadeInImage.memoryNetwork(
+        image: article.imageUrl,
+        placeholder: kTransparentImage,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Container(
+        height: 64.0,
+      );
+    }
+  }
+
+  Widget preview(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      child: Text(
+        article.content,
+        style: Theme.of(context).textTheme.body1.copyWith(
+          fontSize: 16.0,
+          height: 1.3,
+        ),
+      ),
+    );
+  }
+
+  Widget articleCategory(BuildContext context) {
+    List<String> categories = ['us'];
+    if (category != null)
+      categories.add(category);
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 38.0,
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        separatorBuilder: (BuildContext context, int index) {
+          return Text(
+            '  ¬  ',
+            style: Theme.of(context).textTheme.overline.copyWith(
+              color: Colors.black54,
+              fontSize: 13.0,
+              height: 2.8,
+            ),
+          );
+        },
+        itemBuilder: (BuildContext context, int index) {
+          return Text(
+            categories[index].toUpperCase(),
+            style: Theme.of(context).textTheme.overline.copyWith(
+              fontSize: 13.0,
+              height: 2.9,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget title(BuildContext context) {
+    final String title = article.title != null
+      ? ArticleTile.cleanTitle(article.title)
+      : '(No title)';
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.headline.copyWith(
+          height: 0.7,
+        ),
+      ),
+    );
+  }
+
+}
+
+class _BottomSheet extends StatelessWidget {
+
+  _BottomSheet({
+    @required this.url,
+  }) : assert(url != null);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.bottomCenter,
       child: SafeArea(
         child: Container(
-          width: 56.0,
-          height: 56.0,
+          width: double.infinity,
           child: Material(
-            elevation: 4.0,
+            color: Theme.of(context).cardColor,
+            elevation: 24.0,
             shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0)),
             ),
-            child: Row(
-              children: <Widget>[
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ButtonBar(
+                alignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
 
-                IconButton(
-                  icon: Theme.of(context).platform == TargetPlatform.iOS
-                    ? Icon(Icons.arrow_back_ios)
-                    : Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                  FlatButton(
+                    textColor: Theme.of(context).accentColor,
+                    child: Text('Share'),
+                    onPressed: () => _share(),
+                  ),
 
-              ],
+                  RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    colorBrightness: Brightness.dark,
+                    child: Text('Full article'),
+                    onPressed: () => _launchUrl(context),
+                  ),
+
+                ],
+              ),
             ),
           ),
         ),
@@ -66,86 +204,14 @@ class Article extends StatelessWidget {
     );
   }
 
-  Widget _content(BuildContext context) {
-    final String title = ArticleTile.cleanTitle(article.title);
-    return ListView(
-      children: <Widget>[
-
-        // Article image.
-        FadeInImage.memoryNetwork(
-          image: article.imageUrl,
-          placeholder: kTransparentImage,
-          fit: BoxFit.cover,
-        ),
-
-        // Title.
-        Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(title, style: Theme.of(context).textTheme.headline.copyWith(
-            height: 0.7,
-          )),
-        ),
-
-        // Content.
-        Padding(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Text(article.content, style: Theme.of(context).textTheme.body1.copyWith(
-            fontSize: 16.0,
-            height: 1.4,
-          )),
-        ),
-
-        Divider(),
-
-        // Actions.
-        Container(
-          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-
-              // Share.
-              Flexible(
-                flex: 1,
-                child: FlatButton(
-                  textColor: Theme.of(context).accentColor,
-                  highlightColor: Theme.of(context).accentColor.withOpacity(0.12),
-                  splashColor: Theme.of(context).accentColor.withOpacity(0.12),
-                  onPressed: () => _share(),
-                  child: Text('Share'),
-                ),
-              ),
-
-              SizedBox(width: 16.0),
-
-              // Read full article.
-              Flexible(
-                flex: 2,
-                child: RaisedButton(
-                  colorBrightness: Brightness.dark,
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => _launchUrl(context),
-                  child: Text('Read full article'),
-                ),
-              ),
-
-            ],
-          ),
-        ),
-
-      ],
-    );
-  }
-
   void _share() {
-    Share.share(article.url);
+    Share.share(url);
   }
 
   void _launchUrl(BuildContext context) async {
     try {
       await launch(
-        article.url,
+        url,
         option: CustomTabsOption(
           toolbarColor: Theme.of(context).primaryColor,
           enableDefaultShare: true,
@@ -157,6 +223,44 @@ class Article extends StatelessWidget {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+}
+
+class _Actions extends StatelessWidget {
+  
+  _Actions({
+    this.actions,
+  })  : assert(actions != null),
+        assert(actions.isNotEmpty);
+
+  final List<IconButton> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SafeArea(
+        child: Container(
+          width: 56.0 * actions.length,
+          height: 56.0,
+          child: Material(
+            color: Theme.of(context).primaryColor,
+            elevation: 4.0,
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0)),
+            ),
+            child: ListView.builder(
+              itemCount: actions.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (BuildContext context, int index) {
+                return actions[index];
+              },
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
 }

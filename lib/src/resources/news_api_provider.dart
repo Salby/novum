@@ -12,7 +12,7 @@ class NewsApiProvider {
 
   Future<ArticleCollectionModel> searchArticles(String query) async {
     final encodedQuery = Uri.encodeFull(query);
-    final response = await client.get('${url}top-headlines?q=$encodedQuery&language=en&apiKey=$_apiKey');
+    final response = await client.get('${url}top-headlines?country=us&q=$encodedQuery&language=en&apiKey=$_apiKey');
     return _handleResponse(response);
   }
 
