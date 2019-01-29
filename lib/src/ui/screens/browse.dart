@@ -41,6 +41,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final listPadding = EdgeInsets.only(top: 67.0, bottom: 20.0);
     return Scaffold(
       drawer: NavigationDrawer(),
       body: Stack(
@@ -68,6 +69,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                       
                       return ArticleList(
                         snapshot.data.articles,
+                        padding: listPadding,
                         itemCount: widget.category == null
                           ? 5
                           : null,
@@ -75,6 +77,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                     }
                     bloc.fetchArticles(category: widget.category ?? '');
                     return ArticleList.skeleton(
+                      padding: listPadding,
                       itemCount: widget.category == null
                         ? 5
                         : null,
