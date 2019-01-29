@@ -65,8 +65,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                 && controller.isCompleted
                 && notification.metrics.pixels < notification.metrics.maxScrollExtent;
               final bool overflowTop =
-                notification.metrics.pixels < 1.0
-                && controller.isCompleted;
+                notification.metrics.pixels < 1.0;
 
               if (overflowTop) {
                 controller.reverse();
