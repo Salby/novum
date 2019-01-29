@@ -57,12 +57,12 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
             onNotification: (notification) {
 
               final bool scrollingDown =
-                notification.scrollDelta > 0 
-                && controller.isDismissed 
+                notification.scrollDelta > 0
+                && controller.isDismissed
                 && notification.metrics.pixels > 0.0;
               final bool scrollingUp =
-                notification.scrollDelta < 0 
-                && controller.isCompleted 
+                notification.scrollDelta < 0
+                && controller.isCompleted
                 && notification.metrics.pixels < notification.metrics.maxScrollExtent;
               final bool overflowTop =
                 notification.metrics.pixels < 1.0
