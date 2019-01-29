@@ -50,18 +50,38 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
           /// The NotificationListener listens for scroll updates
           /// and determines if the app bar should expand or collapse
           /// depending on the scroll direction.
+          /// 
+          /// [controller.reverse()] expands the app bar.
+          /// [controller.forward()] collapses the app bar.
           NotificationListener<ScrollUpdateNotification>(
             onNotification: (notification) {
-              if (notification.scrollDelta < 0 && controller.isCompleted) {
-                // Expand.
+
+              final bool scrollingDown =
+                notification.scrollDelta > 0 
+                && controller.isDismissed 
+                && notification.metrics.pixels > 0.0;
+              final bool scrollingUp =
+                notification.scrollDelta < 0 
+                && controller.isCompleted 
+                && notification.metrics.pixels < notification.metrics.maxScrollExtent;
+              final bool overflowTop =
+                notification.metrics.pixels < 1.0
+                && controller.isCompleted;
+
+              if (overflowTop) {
                 controller.reverse();
-              } else if (notification.scrollDelta > 0 && controller.isDismissed) {
-                // Collapse.
+              } else if (scrollingUp) {
+                controller.reverse();
+              } else if (scrollingDown) {
                 controller.forward();
               }
             },
             child: ListView(
-              children: <Widget>[ 
+              children: <Widget>[
+
+                /// Builds list of articles from [bloc.articles].
+                /// 
+                /// Shows skeleton-screen if stream is empty.
                 StreamBuilder(
                   stream: bloc.articles,
                   builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
@@ -78,16 +98,22 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                     bloc.fetchArticles(category: widget.category ?? '');
                     return ArticleList.skeleton(
                       padding: listPadding,
-                      itemCount: widget.category == null
-                        ? 5
-                        : null,
+                      itemCount: 5,
                     );
                   }
                 ),
+
+                Divider(),
+
+                // TODO: Add stock market graph here when complete.
+
               ],
             ),
           ),
 
+          /// Custom app bar.
+          /// 
+          /// Appears when MediaQuery is availabe (doesn't return 0.0).
           Align(
             alignment: Alignment.topCenter,
             child: MediaQuery.of(context).size.width == 0.0
