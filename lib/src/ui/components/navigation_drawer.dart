@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './logo.dart';
 
 class NavigationDrawer extends StatelessWidget {
 
@@ -56,7 +57,7 @@ class DrawerHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.only(bottom: 20.0, left: 16.0),
-      title: Text('Novum', style: Theme.of(context).textTheme.display1),
+      title: Logo.large(),
       leading: IconButton(
         color: Colors.black87,
         icon: Icon(Icons.close, semanticLabel: 'Close'),

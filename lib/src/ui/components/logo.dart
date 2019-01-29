@@ -10,6 +10,10 @@ class Logo extends StatelessWidget {
     this.title: 'N',
   })  : fontSize = 26.0,
         height = 1.2;
+  Logo.large({
+    this.title: 'Novum',
+  })  : fontSize = 34.0,
+        height = 1.0;
 
   final String title;
   final double fontSize;
