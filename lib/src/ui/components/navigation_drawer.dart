@@ -111,6 +111,7 @@ class DrawerItem extends StatelessWidget {
     bool isCurrentRoute;
     Navigator.popUntil(context, (route) {
       isCurrentRoute = route.settings.name == routeName;
+      return true;
     });
     return isCurrentRoute;
   }
