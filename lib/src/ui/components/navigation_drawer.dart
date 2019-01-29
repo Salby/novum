@@ -81,11 +81,7 @@ class DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool currentRoute;
-    Navigator.popUntil(context, (route) {
-      currentRoute = route.settings.name == this.route;
-      return true;
-    });
+    bool currentRoute = _isCurrentRoute(context, route);
     return ListTile(
       enabled: !currentRoute,
       contentPadding: EdgeInsets.only(left: 34.0, right: 34.0),
@@ -108,6 +104,14 @@ class DrawerItem extends StatelessWidget {
         : null,
       onTap: () => Navigator.of(context).pushReplacementNamed(route),
     );
+  }
+
+  bool _isCurrentRoute(BuildContext context String routeName) {
+    bool isCurrentRoute;
+    Navigator.popUntil(context, (route) {
+      isCurrentRoute = route.settings.name == routeName;
+    });
+    return isCurrentRoute;
   }
 
 }
