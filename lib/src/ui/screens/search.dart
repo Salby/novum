@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/article_collection_model.dart';
 import '../../blocs/article_collection_bloc.dart';
-import '../components/article_list_builder.dart';
-import '../components/article_list_skeleton.dart';
+import '../components/article_list.dart';
 import '../components/logo.dart';
 
 class Search extends StatefulWidget {
@@ -127,15 +126,15 @@ class _Results extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
         if (snapshot.hasData) {
           // Build list of search results.
-          return ArticleListBuilder(
+          return ArticleList(
             snapshot.data.articles, 
-            expanded: false,
+            expandFirst: false,
             padding: padding
           );
         }
         // Return placeholder skeleton.
         if (controller.value.text.isNotEmpty) {
-          return ArticleListSkeleton(expanded: false);
+          return ArticleList.skeleton(expandFirst: false);
         }
         // Show empty container if there is no current query.
         return Container(padding: padding);
