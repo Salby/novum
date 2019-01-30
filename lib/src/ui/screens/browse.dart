@@ -47,70 +47,73 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
       body: Stack(
         children: <Widget>[
 
-          /// The NotificationListener listens for scroll updates
-          /// and determines if the app bar should expand or collapse
-          /// depending on the scroll direction.
-          /// 
-          /// [controller.reverse()] expands the app bar.
-          /// [controller.forward()] collapses the app bar.
-          NotificationListener<ScrollUpdateNotification>(
-            onNotification: (notification) {
+          RefreshIndicator(
+            displacement: 108.0,
+            onRefresh: () => _refreshContent(),
 
-              final bool scrollingDown =
-                notification.scrollDelta > 0
-                && controller.isDismissed
-                && notification.metrics.pixels > 0.0;
-              final bool scrollingUp =
-                notification.scrollDelta < 0
-                && controller.isCompleted
-                && notification.metrics.pixels < notification.metrics.maxScrollExtent;
-              final bool overflowTop =
-                notification.metrics.pixels < 1.0;
+            /// The NotificationListener listens for scroll updates
+            /// and determines if the app bar should expand or collapse
+            /// depending on the scroll direction.
+            /// 
+            /// [controller.reverse()] expands the app bar.
+            /// [controller.forward()] collapses the app bar.
+            child: NotificationListener<ScrollUpdateNotification>(
+              onNotification: (notification) {
 
-              if (overflowTop) {
-                controller.reverse();
-              } else if (scrollingUp) {
-                controller.reverse();
-              } else if (scrollingDown) {
-                controller.forward();
-              }
-            },
-            child: ListView(
-              children: <Widget>[
+                final bool scrollingDown =
+                  notification.scrollDelta > 0
+                  && controller.isDismissed
+                  && notification.metrics.pixels > 0.0;
+                final bool scrollingUp =
+                  notification.scrollDelta < 0
+                  && controller.isCompleted
+                  && notification.metrics.pixels < notification.metrics.maxScrollExtent;
+                final bool overflowTop =
+                  notification.metrics.pixels < 1.0;
 
-                /// Builds list of articles from [bloc.articles].
-                /// 
-                /// Shows skeleton-screen if stream is empty.
-                StreamBuilder(
-                  stream: bloc.articles,
-                  builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
-                    if (snapshot.hasData) {
-                      
-                      return ArticleList(
-                        snapshot.data.articles,
+                if (overflowTop) {
+                  controller.reverse();
+                } else if (scrollingUp) {
+                  controller.reverse();
+                } else if (scrollingDown) {
+                  controller.forward();
+                }
+              },
+              child: ListView(
+                children: <Widget>[
+
+                  /// Builds list of articles from [bloc.articles].
+                  /// Shows skeleton-screen if stream is empty.
+                  StreamBuilder(
+                    stream: bloc.articles,
+                    builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
+                      if (snapshot.hasData) {
+                        return ArticleList(
+                          snapshot.data.articles,
+                          padding: listPadding,
+                          itemCount: widget.category == null
+                            ? 5
+                            : null,
+                        );
+                      }
+                      _refreshContent();
+                      return ArticleList.skeleton(
                         padding: listPadding,
-                        itemCount: widget.category == null
-                          ? 5
-                          : null,
+                        itemCount: 5,
                       );
                     }
-                    bloc.fetchArticles(category: widget.category ?? '');
-                    return ArticleList.skeleton(
-                      padding: listPadding,
-                      itemCount: 5,
-                    );
-                  }
-                ),
+                  ),
 
-                Divider(),
+                  Divider(),
 
-                // TODO: Add stock market graph here when complete.
+                  // TODO: Add stock market graph here when complete.
 
-              ],
+                ],
+              ),
             ),
           ),
 
-          /// Custom app bar.
+          /// Custom app bar
           /// 
           /// Appears when MediaQuery is availabe (doesn't return 0.0).
           Align(
@@ -127,6 +130,14 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  /// Refresh content
+  /// 
+  /// Refreshes the [bloc.articles] stream.
+  Future<Null> _refreshContent() async {
+    await bloc.fetchArticles(category: widget.category ?? '');
+    return null;
   }
 
   @override
