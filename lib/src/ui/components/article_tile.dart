@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
-import './skeleton_frame.dart';
 import './fade_route.dart';
 import '../screens/article.dart';
 import 'package:transparent_image/transparent_image.dart';
