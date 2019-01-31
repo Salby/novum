@@ -172,9 +172,6 @@ class _BottomSheet extends StatelessWidget {
           child: Material(
             color: Theme.of(context).cardColor,
             elevation: 24.0,
-            shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(24.0)),
-            ),
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: ButtonBar(
