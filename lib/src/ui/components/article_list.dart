@@ -12,7 +12,7 @@ class ArticleList extends StatelessWidget {
   }) : assert(articles != null);
 
   ArticleList.skeleton({
-    this.expandFirst,
+    this.expandFirst: true,
     this.itemCount,
     this.padding: const EdgeInsets.symmetric(vertical: 20.0),
   }) : articles = null;
