@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/article_model.dart';
 import '../components/article_tile.dart';
+import '../components/image_placeholder.dart';
 import 'package:flutter_villains/villain.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:share/share.dart';
@@ -83,9 +84,7 @@ class _Content extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      return Container(
-        height: 64.0,
-      );
+      return ImagePlaceholder('No image');
     }
   }
 
