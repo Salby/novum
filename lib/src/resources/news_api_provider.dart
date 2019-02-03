@@ -1,38 +1,27 @@
-import 'dart:async';
-import 'package:http/http.dart';
-import 'dart:convert';
 import '../models/article_collection_model.dart';
 import '../../secrets/news_api_key.dart';
+import 'package:newsapi_client/newsapi_client.dart';
 
 class NewsApiProvider {
   
-  Client client = Client();
-  final String _apiKey = kNewsApiKey;
-  final String url = 'https://newsapi.org/v2/';
+  final client = NewsapiClient(kNewsApiKey);
 
   Future<ArticleCollectionModel> searchArticles(String query) async {
-    final encodedQuery = Uri.encodeFull(query);
-    final response = await client.get('${url}top-headlines?country=us&q=$encodedQuery&language=en&apiKey=$_apiKey');
-    return _handleResponse(response);
+    final now = DateTime.now();
+    final response = await client.request(Everything(
+      query: query,
+      from: now.subtract(Duration(days: 10)),
+      to: now,
+    ));
+    return ArticleCollectionModel.fromJson(response);
   }
 
-  Future<ArticleCollectionModel> fetchArticles({String category: ''}) async {
-    String parameter;
-    if (category != '') {
-      parameter = 'category=$category&';
-    } else {
-      parameter = '';
-    }
-    final response = await client.get('${url}top-headlines?country=us&${parameter}apiKey=$_apiKey');
-    return _handleResponse(response);
-  }
-
-  ArticleCollectionModel _handleResponse(Response response) {
-    if (response.statusCode == 200) {
-      return ArticleCollectionModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load response.');
-    }
+  Future<ArticleCollectionModel> topHeadlines({Categories category}) async {
+    final response = await client.request(TopHeadlines(
+      language: 'en',
+      category: category ?? null,
+    ));
+    return ArticleCollectionModel.fromJson(response);
   }
 
 }

@@ -4,6 +4,7 @@ import './ui/theme/theme.dart';
 import './ui/screens/browse.dart';
 import './ui/screens/search.dart';
 import 'package:flutter_villains/villain.dart';
+import 'package:newsapi_client/newsapi_client.dart';
 
 final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
   statusBarIconBrightness: Brightness.dark,
@@ -25,12 +26,12 @@ class NovumApp extends StatelessWidget {
       routes: {
         '/': (context) => Browse(title: 'Front page'),
         '/search': (context) => Search(),
-        '/business': (context) => Browse(title: 'Business', category: 'business'),
-        '/entertainment': (context) => Browse(title: 'Entertainment', category: 'entertainment'),
-        '/health': (context) => Browse(title: 'Health', category: 'health'),
-        '/science': (context) => Browse(title: 'Science', category: 'science'),
-        '/sports': (context) => Browse(title: 'Sports', category: 'sports'),
-        '/technology': (context) => Browse(title: 'Technology', category: 'technology'),
+        '/business': (context) => Browse(title: 'Business', category: Categories.business),
+        '/entertainment': (context) => Browse(title: 'Entertainment', category: Categories.entertainment),
+        '/health': (context) => Browse(title: 'Health', category: Categories.health),
+        '/science': (context) => Browse(title: 'Science', category: Categories.business),
+        '/sports': (context) => Browse(title: 'Sports', category: Categories.sports),
+        '/technology': (context) => Browse(title: 'Technology', category: Categories.technology),
       },
     );
 

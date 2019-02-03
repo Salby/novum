@@ -4,6 +4,7 @@ import '../components/novum_app_bar.dart';
 import '../components/article_list.dart';
 import '../../models/article_collection_model.dart';
 import '../../blocs/article_collection_bloc.dart';
+import 'package:newsapi_client/newsapi_client.dart';
 
 class Browse extends StatefulWidget {
 
@@ -13,7 +14,7 @@ class Browse extends StatefulWidget {
   });
 
   final String title;
-  final String category;
+  final Categories category;
 
   @override
   BrowseState createState() => BrowseState();
@@ -136,7 +137,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   /// 
   /// Refreshes the [bloc.articles] stream.
   Future<Null> _refreshContent() async {
-    await bloc.fetchArticles(category: widget.category ?? '');
+    await bloc.fetchArticles(category: widget.category ?? null);
     return null;
   }
 

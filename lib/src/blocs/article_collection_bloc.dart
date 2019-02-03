@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import '../resources/repositoy.dart';
 import '../models/article_collection_model.dart';
+import 'package:newsapi_client/newsapi_client.dart';
 
 class ArticleCollectionBloc {
 
@@ -9,7 +10,7 @@ class ArticleCollectionBloc {
 
   Observable<ArticleCollectionModel> get articles => _articleFetcher.stream;
 
-  fetchArticles({String category: ''}) async {
+  fetchArticles({Categories category}) async {
     ArticleCollectionModel articleCollection = await _repository.fetchArticles(category: category);
     _articleFetcher.sink.add(articleCollection);
   }
