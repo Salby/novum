@@ -137,7 +137,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   /// 
   /// Refreshes the [bloc.articles] stream.
   Future<Null> _refreshContent() async {
-    await bloc.fetchArticles(category: widget.category ?? null);
+    await bloc.topHeadlines(category: widget.category ?? null);
     return null;
   }
 

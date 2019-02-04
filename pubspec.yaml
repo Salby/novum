@@ -25,7 +25,7 @@ dependencies:
   flutter_villains: ^1.2.0
   share: ^0.5.3
   flutter_custom_tabs: ^0.4.0
-  newsapi_client: ^0.2.1
+  newsapi_client: ^0.2.3
 
 dev_dependencies:
   flutter_test:

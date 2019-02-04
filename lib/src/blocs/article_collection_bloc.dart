@@ -10,8 +10,8 @@ class ArticleCollectionBloc {
 
   Observable<ArticleCollectionModel> get articles => _articleFetcher.stream;
 
-  fetchArticles({Categories category}) async {
-    ArticleCollectionModel articleCollection = await _repository.fetchArticles(category: category);
+  topHeadlines({Categories category}) async {
+    ArticleCollectionModel articleCollection = await _repository.topHeadlines(category: category);
     _articleFetcher.sink.add(articleCollection);
   }
   searchArticles(String query) async {

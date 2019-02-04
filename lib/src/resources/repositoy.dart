@@ -9,7 +9,7 @@ class Repository {
   Future<ArticleCollectionModel> searchArticles(String query) async {
     return newsApiProvider.searchArticles(query);
   }
-  Future<ArticleCollectionModel> fetchArticles({Categories category}) async {
+  Future<ArticleCollectionModel> topHeadlines({Categories category}) async {
     return newsApiProvider.topHeadlines(category: category);
   }
 
