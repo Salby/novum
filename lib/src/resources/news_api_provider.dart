@@ -18,8 +18,8 @@ class NewsApiProvider {
 
   Future<ArticleCollectionModel> topHeadlines({Categories category}) async {
     final response = await client.request(TopHeadlines(
-      language: 'en',
       category: category ?? null,
+      country: Countries.unitedStatesOfAmerica,
     ));
     return ArticleCollectionModel.fromJson(response);
   }
