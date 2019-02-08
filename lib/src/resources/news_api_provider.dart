@@ -6,21 +6,8 @@ class NewsApiProvider {
   
   final client = NewsapiClient(kNewsApiKey);
 
-  Future<ArticleCollectionModel> searchArticles(String query) async {
-    final now = DateTime.now();
-    final response = await client.request(Everything(
-      query: query,
-      from: now.subtract(Duration(days: 10)),
-      to: now,
-    ));
-    return ArticleCollectionModel.fromJson(response);
-  }
-
-  Future<ArticleCollectionModel> topHeadlines({Categories category}) async {
-    final response = await client.request(TopHeadlines(
-      category: category ?? null,
-      country: Countries.unitedStatesOfAmerica,
-    ));
+  Future<ArticleCollectionModel> request(Endpoint endpoint) async {
+    final response = await client.request(endpoint);
     return ArticleCollectionModel.fromJson(response);
   }
 

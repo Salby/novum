@@ -92,9 +92,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                         return ArticleList(
                           snapshot.data.articles,
                           padding: listPadding,
-                          itemCount: widget.category == null
-                            ? 5
-                            : null,
+                          itemCount: snapshot.data.articles.length,
                         );
                       }
                       _refreshContent();
@@ -137,7 +135,19 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   /// 
   /// Refreshes the [bloc.articles] stream.
   Future<Null> _refreshContent() async {
-    await bloc.topHeadlines(category: widget.category ?? null);
+    Endpoint endpoint;
+    if (widget.category == null) {
+      endpoint = TopHeadlines(
+        country: Countries.unitedStatesOfAmerica,
+        pageSize: 5,
+      );
+    } else {
+      endpoint = TopHeadlines(
+        country: Countries.unitedStatesOfAmerica,
+        category: widget.category,
+      );
+    }
+    await bloc.requestArticles(endpoint);
     return null;
   }
 

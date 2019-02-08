@@ -10,12 +10,17 @@ class ArticleCollectionBloc {
 
   Observable<ArticleCollectionModel> get articles => _articleFetcher.stream;
 
-  topHeadlines({Categories category}) async {
-    ArticleCollectionModel articleCollection = await _repository.topHeadlines(category: category);
+  requestArticles(TopHeadlines endpoint) async {
+    ArticleCollectionModel articleCollection = await _repository.newsApiRequest(endpoint);
     _articleFetcher.sink.add(articleCollection);
   }
   searchArticles(String query) async {
-    ArticleCollectionModel articleCollection = await _repository.searchArticles(query);
+    final DateTime now = DateTime.now();
+    ArticleCollectionModel articleCollection = await _repository.newsApiRequest(Everything(
+      query: query,
+      from: now.subtract(Duration(days: 14)),
+      to: now,
+    ));
     _articleFetcher.sink.add(articleCollection);
   }
 

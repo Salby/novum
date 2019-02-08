@@ -6,11 +6,9 @@ class Repository {
 
   final newsApiProvider = NewsApiProvider();
 
-  Future<ArticleCollectionModel> searchArticles(String query) async {
-    return newsApiProvider.searchArticles(query);
-  }
-  Future<ArticleCollectionModel> topHeadlines({Categories category}) async {
-    return newsApiProvider.topHeadlines(category: category);
+  Future<ArticleCollectionModel> newsApiRequest(Endpoint endpoint) async {
+    final response = await newsApiProvider.request(endpoint);
+    return response;
   }
 
 }
