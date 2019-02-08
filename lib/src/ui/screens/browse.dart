@@ -23,19 +23,20 @@ class Browse extends StatefulWidget {
 
 class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
-  AnimationController controller;
+  AnimationController _controller;
+  int _pageSize = 20;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
+    _controller = AnimationController(
       duration: Duration(milliseconds: 600),
       vsync: this,
     )
       ..addListener(() { setState(() {}); })
       ..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) {
-          controller.reset();
+          _controller.reset();
         }
       });
   }
@@ -43,6 +44,18 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final listPadding = EdgeInsets.only(top: 67.0, bottom: 20.0);
+    final Widget readMore = widget.category != null
+      ? FlatButton(
+        child: Text(
+          'Read More',
+          style: Theme.of(context).textTheme.button.copyWith(
+            fontSize: 18.0,
+          ),
+        ),
+        onPressed: () => _moreContent(),
+      )
+      : Container();
+
     return Scaffold(
       drawer: NavigationDrawer(),
       body: Stack(
@@ -63,21 +76,21 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
                 final bool scrollingDown =
                   notification.scrollDelta > 0
-                  && controller.isDismissed
+                  && _controller.isDismissed
                   && notification.metrics.pixels > 0.0;
                 final bool scrollingUp =
                   notification.scrollDelta < 0
-                  && controller.isCompleted
+                  && _controller.isCompleted
                   && notification.metrics.pixels < notification.metrics.maxScrollExtent;
                 final bool overflowTop =
                   notification.metrics.pixels < 1.0;
 
                 if (overflowTop) {
-                  controller.reverse();
+                  _controller.reverse();
                 } else if (scrollingUp) {
-                  controller.reverse();
+                  _controller.reverse();
                 } else if (scrollingDown) {
-                  controller.forward();
+                  _controller.forward();
                 }
               },
               child: ListView(
@@ -103,6 +116,8 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                     }
                   ),
 
+                  readMore,
+
                   Divider(),
 
                   // TODO: Add stock market graph here when complete.
@@ -122,13 +137,26 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
               : NovumAppBar(
                 title: widget.title,
                 context: context,
-                controller: controller,
+                controller: _controller,
               ),
           ),
 
         ],
       ),
     );
+  }
+
+  /// Submits a new article request with an increased
+  /// pageSize.
+  void _moreContent({int step: 10}) {
+    setState(() {
+      _pageSize = _pageSize += step;
+    });
+    bloc.requestArticles(TopHeadlines(
+      country: Countries.unitedStatesOfAmerica,
+      category: widget.category,
+      pageSize: _pageSize,
+    ));
   }
 
   /// Refresh content
@@ -153,7 +181,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 }
