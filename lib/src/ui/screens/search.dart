@@ -14,6 +14,7 @@ class Search extends StatefulWidget {
 class SearchState extends State<Search> {
 
   final textController = TextEditingController();
+
   /// Create new instance of [ArticleCollectionBloc] that is only used
   /// in search to avoid changing the content of the browse screens.
   final searchBloc = ArticleCollectionBloc();
