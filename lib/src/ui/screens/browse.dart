@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../components/navigation_drawer.dart';
 import '../components/novum_app_bar.dart';
 import '../components/article_list.dart';
+import '../components/iex_stock_data.dart';
 import '../../models/article_collection_model.dart';
 import '../../blocs/article_collection_bloc.dart';
 import 'package:newsapi_client/newsapi_client.dart';
@@ -54,6 +55,9 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
         ),
         onPressed: () => _moreContent(),
       )
+      : Container();
+    final Widget stocks = widget.category == null
+      ? IexStockData()
       : Container();
 
     return Scaffold(
@@ -120,7 +124,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
                   Divider(),
 
-                  // TODO: Add stock market graph here when complete.
+                  stocks,
 
                 ],
               ),

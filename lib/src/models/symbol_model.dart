@@ -10,7 +10,7 @@ class SymbolModel {
   final String symbol;
   final String companyName;
   final String sector;
-  final String extendedChange;
+  final double extendedChange;
   final double latestPrice;
 
 }
