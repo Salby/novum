@@ -9,8 +9,12 @@ class IexApiProvider {
 
   Future<List<SymbolModel>> symbols() async {
     final response = await client.get(urlPrefix + '/stock/market/batch?symbols=aapl,fb,goog&types=quote');
-    final parsedJson = _handleResponse(response);
-    return _handleSymbols(parsedJson);
+    final Map<String, dynamic> parsedJson = _handleResponse(response);
+    List<SymbolModel> symbolList = [];
+    for (Map<String, dynamic> value in parsedJson.values) {
+      symbolList.add(SymbolModel.fromJson(value['quote']));
+    }
+    return symbolList;
   }
 
   Map<String, dynamic> _handleResponse(Response response) {
@@ -19,16 +23,6 @@ class IexApiProvider {
     } else {
       throw Exception('Failed to load data.');
     }
-  }
-
-  List<SymbolModel> _handleSymbols(Map<String, dynamic> parsedJson) {
-    List symbolList;
-    parsedJson.forEach((key, value) {
-      if (value is Map<String, dynamic>) {
-        symbolList.add(SymbolModel.fromJson(value));
-      }
-    });
-    return symbolList;
   }
 
 }
