@@ -1,5 +1,10 @@
 # Changelog
 
+[Unreleased]
+
+### Added
+- Added screenshots to README.md.
+
 ## 1.0.2 - 2019-02-08
 
 ### Added
