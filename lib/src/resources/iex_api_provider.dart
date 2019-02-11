@@ -1,5 +1,6 @@
 import 'dart:convert';
 import '../models/symbol_model.dart';
+import '../models/chart_model.dart';
 import 'package:http/http.dart';
 
 class IexApiProvider {
@@ -15,6 +16,12 @@ class IexApiProvider {
       symbolList.add(SymbolModel.fromJson(value['quote']));
     }
     return symbolList;
+  }
+
+  Future<ChartModel> chart(SymbolModel symbol) async {
+    final response = await client.get(urlPrefix + '/stock/${symbol.symbol}/chart/1d');
+    final Map<String, dynamic> parsedJson = _handleResponse(response);
+    return ChartModel.fromJson(symbol, parsedJson);
   }
 
   Map<String, dynamic> _handleResponse(Response response) {

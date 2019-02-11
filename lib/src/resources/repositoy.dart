@@ -2,6 +2,7 @@ import './news_api_provider.dart';
 import './iex_api_provider.dart';
 import '../models/article_collection_model.dart';
 import '../models/symbol_model.dart';
+import '../models/chart_model.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
 class Repository {
@@ -16,6 +17,10 @@ class Repository {
 
   Future<List<SymbolModel>> iexApiSymbols() async {
     final response = await iexApiProvider.symbols();
+    return response;
+  }
+  Future<ChartModel> iexApiChart(SymbolModel symbol) async {
+    final response = await iexApiProvider.chart(symbol);
     return response;
   }
 
