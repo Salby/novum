@@ -66,7 +66,7 @@ class IexStockData extends StatelessWidget {
                           );
                         }
                         bloc.requestChart(snapshot.data[0]);
-                        return Container(height: 100.0);
+                        return Container(height: 112.0);
                       },
                     ),
                     Container(
