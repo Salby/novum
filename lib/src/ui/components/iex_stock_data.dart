@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/symbol_model.dart';
 import '../../blocs/iex_bloc.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class IexStockData extends StatelessWidget {
 
@@ -8,6 +9,13 @@ class IexStockData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle attributionText = Theme.of(context).textTheme.body1.copyWith(
+      color: Colors.black54,
+    );
+    final TextStyle attributionLink = Theme.of(context).textTheme.body1.copyWith(
+      color: Theme.of(context).accentColor,
+      fontWeight: FontWeight.w500,
+    );
     return Container(
       child: Column(
         children: <Widget>[
@@ -50,9 +58,46 @@ class IexStockData extends StatelessWidget {
             },
           ),
 
+          // Include attribution to IEX for providing the data.
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
+            child: Row(
+              children: <Widget>[
+                Text('Data provided for free by ', style: attributionText),
+                InkWell(
+                  onTap: () => _launchUrl(context, 'https://iextrading.com/developer'),
+                  child: Text('IEX', style: attributionLink),
+                ),
+                Text('. View ', style: attributionText),
+                InkWell(
+                  onTap: () => _launchUrl(context, 'https://iextrading.com/api-exhibit-a/'),
+                  child: Text('IEX\'s terms of use', style: attributionLink),
+                ),
+                Text('.', style: attributionText),
+              ],
+            ),
+          ),
+
         ],
       ),
     );
+  }
+
+  void _launchUrl(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: CustomTabsAnimation.slideIn(),
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
 }
