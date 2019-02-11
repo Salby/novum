@@ -180,7 +180,7 @@ class _DataTile extends StatelessWidget {
       children: <Widget>[
         symbol,
         Text(
-          '${change.toString()}%',
+          '${change.toString().replaceAll('-', '')}%',
           style: Theme.of(context).textTheme.body1,
         ),
       ],
