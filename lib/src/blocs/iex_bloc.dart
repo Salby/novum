@@ -8,6 +8,7 @@ class IexBloc {
   final _repository = Repository();
   final _symbolsFetcher = PublishSubject<List<SymbolModel>>();
   final _chartFetcher = PublishSubject<ChartModel>();
+  SymbolModel activeSymbol;
 
   Observable<List<SymbolModel>> get symbols => _symbolsFetcher.stream;
   Observable<ChartModel> get chart => _chartFetcher.stream;
@@ -19,6 +20,7 @@ class IexBloc {
   requestChart(SymbolModel symbol) async {
     ChartModel chart = await _repository.iexApiChart(symbol);
     _chartFetcher.sink.add(chart);
+    activeSymbol = symbol;
   }
 
   dispose() {

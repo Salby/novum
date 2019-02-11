@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../models/symbol_model.dart';
+import '../../models/chart_model.dart';
 import '../../blocs/iex_bloc.dart';
+import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class IexStockData extends StatelessWidget {
@@ -20,33 +22,83 @@ class IexStockData extends StatelessWidget {
       child: Column(
         children: <Widget>[
 
-          // TODO: Add stock graph widget.
-
           StreamBuilder(
             stream: bloc.symbols,
             builder: (BuildContext context, AsyncSnapshot<List<SymbolModel>> snapshot) {
               if (snapshot.hasData) {
-                return Container(
-                  height: 124.0,
-                  padding: EdgeInsets.symmetric(vertical: 20.0),
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: 3,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Container(
-                        width: 1.0,
-                        color: Theme.of(context).dividerColor,
-                      );
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      return _DataTile(
-                        title: snapshot.data[index].symbol,
-                        subtitle: snapshot.data[index].latestPrice.toString(),
-                        change: snapshot.data[index].extendedChange,
-                      );
-                    },
-                  ),
+                return Column(
+                  children: <Widget>[
+                    StreamBuilder(
+                      stream: bloc.chart,
+                      builder: (BuildContext context, AsyncSnapshot<ChartModel> secondSnapshot) {
+                        if (secondSnapshot.hasData) {
+                          final dateTime = secondSnapshot.data.chart.keys.toList()[0];
+                          final String date = dateTime.toString().split(' ')[0];
+                          return Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'Stocks',
+                                      style: Theme.of(context).textTheme.headline,
+                                    ),
+                                    Text(
+                                      ' • $date',
+                                      style: Theme.of(context).textTheme.headline.copyWith(
+                                        fontFamily: 'Libre Franklin',
+                                        fontSize: 18.0,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 112.0,
+                                child: Sparkline(
+                                  data: secondSnapshot.data.chart.values.toList(),
+                                  lineColor: Theme.of(context).accentColor,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                        bloc.requestChart(snapshot.data[0]);
+                        return Container(height: 100.0);
+                      },
+                    ),
+                    Container(
+                      height: 124.0,
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: 3,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Container(
+                            width: 1.0,
+                            color: Theme.of(context).dividerColor,
+                          );
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: () {
+                              bloc.requestChart(snapshot.data[index]);
+                              bloc.requestSymbols();
+                            },
+                            child: _DataTile(
+                              title: snapshot.data[index].symbol,
+                              subtitle: snapshot.data[index].latestPrice.toString(),
+                              change: snapshot.data[index].extendedChange,
+                              active: snapshot.data[index] == bloc.activeSymbol,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 );
               } else {
                 bloc.requestSymbols();
@@ -108,27 +160,19 @@ class _DataTile extends StatelessWidget {
     this.title,
     this.subtitle,
     this.change,
-    this.displayBorder = false,
+    this.active = false,
   });
 
   final String title;
   final String subtitle;
   final double change;
-  final bool displayBorder;
+  final bool active;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width / 3,
       padding: EdgeInsets.symmetric(horizontal: 20.0),
-      decoration: BoxDecoration(
-        border: displayBorder
-          ? Border(right: BorderSide(
-            style: BorderStyle.solid,
-            color: Theme.of(context).dividerColor,
-          ))
-          : null,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -139,7 +183,7 @@ class _DataTile extends StatelessWidget {
               fontSize: 20.0,
               fontFamily: 'Libre Franklin',
               fontWeight: FontWeight.w700,
-              color: Colors.black87,
+              color: active ? Theme.of(context).accentColor : Colors.black87,
             ),
           ),
 
