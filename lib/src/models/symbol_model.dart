@@ -4,7 +4,7 @@ class SymbolModel {
     symbol = parsedJson['symbol'],
     companyName = parsedJson['companyName'],
     sector = parsedJson['sector'],
-    extendedChange = parsedJson['extendedChange'],
+    extendedChange = _parseChange(parsedJson['extendedChange']),
     latestPrice = parsedJson['latestPrice'];
 
   final String symbol;
@@ -12,5 +12,13 @@ class SymbolModel {
   final String sector;
   final double extendedChange;
   final double latestPrice;
+
+  static double _parseChange(dynamic number) {
+    if (number is int) {
+      return number.toDouble();
+    } else {
+      return number;
+    }
+  }
 
 }
