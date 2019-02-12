@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+- Fixed standard iOS and android icon.
+
 ## 1.0.3 - 2019-02-12
 
 ### Added
