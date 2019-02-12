@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fixed standard iOS and android icon.
+- Fixed adaptive icon being slightly blurry.
 
 ## 1.0.3 - 2019-02-12
 
