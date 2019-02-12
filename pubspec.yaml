@@ -7,7 +7,7 @@ description: A news app built with flutter.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
 # Read more about versioning at semver.org.
-version: 1.0.2
+version: 1.0.3
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -31,7 +31,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.0
 
+flutter_icons:
+  image_path: assets/icons/icon-710.png
+  android: true
+  ios: true
+  adaptive_icon_background: assets/icons/icon-background.png
+  adaptive_icon_foreground: assets/icons/icon-foreground.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

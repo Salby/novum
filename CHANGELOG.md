@@ -1,9 +1,11 @@
 # Changelog
 
-[Unreleased]
+## 1.0.3 - 2019-02-12
 
 ### Added
 - Added screenshots to README.md.
+- Added stock data on the front-page screen provided by [iextrading.com](https://iextrading.com/developer).
+- Added launcher icons.
 
 ## 1.0.2 - 2019-02-08
 
