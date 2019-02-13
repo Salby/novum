@@ -167,6 +167,8 @@ class _FormState extends State<_Form> {
   String validator(String value) {
     if (value.isEmpty) {
       return 'Can\'t be empty';
+    } else {
+      return null;
     }
   }
 
