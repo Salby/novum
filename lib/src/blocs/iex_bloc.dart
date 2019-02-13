@@ -22,6 +22,9 @@ class IexBloc {
     _chartFetcher.sink.add(chart);
     activeSymbol = symbol;
   }
+  setSymbols(List<String> symbols) async {
+    await _repository.sharedPreferencesProvider.setSymbols(symbols: symbols);
+  }
 
   dispose() {
     _symbolsFetcher.close();

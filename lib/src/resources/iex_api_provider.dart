@@ -1,4 +1,5 @@
 import 'dart:convert';
+import './shared_preferences_provider.dart';
 import '../models/symbol_model.dart';
 import '../models/chart_model.dart';
 import 'package:http/http.dart';
@@ -7,9 +8,15 @@ class IexApiProvider {
 
   final String urlPrefix = 'https://api.iextrading.com/1.0';
   final client = Client();
+  final sharedPreferencesProvider = SharedPreferencesProvider();
 
   Future<List<SymbolModel>> symbols() async {
-    final response = await client.get(urlPrefix + '/stock/market/batch?symbols=aapl,fb,goog&types=quote');
+    List<String> symbols = await sharedPreferencesProvider.getSymbols();
+    if (symbols == null) {
+      await sharedPreferencesProvider.setSymbols();
+      symbols = await sharedPreferencesProvider.getSymbols();
+    }
+    final response = await client.get(urlPrefix + '/stock/market/batch?symbols=${symbols[0]},${symbols[1]},${symbols[2]}&types=quote');
     final Map<String, dynamic> parsedJson = _handleResponse(response);
     List<SymbolModel> symbolList = [];
     for (Map<String, dynamic> value in parsedJson.values) {

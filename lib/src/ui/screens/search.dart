@@ -85,20 +85,12 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UnderlineInputBorder inputBorder = UnderlineInputBorder(borderSide: BorderSide(
-      width: 1.0,
-      color: Theme.of(context).dividerColor,
-    ));
     return TextField(
       autofocus: true,
-      cursorColor: Theme.of(context).accentColor,
       style: Theme.of(context).textTheme.body1.copyWith(
         fontSize: 24.0,
       ),
       decoration: InputDecoration(
-        focusedBorder: inputBorder,
-        border: inputBorder,
-        hasFloatingPlaceholder: false,
         hintText: 'Search',
       ),
       controller: controller,
