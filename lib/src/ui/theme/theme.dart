@@ -41,7 +41,25 @@ ThemeData _buildNovumTheme() {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
     ),
 
-    dialogBackgroundColor: Colors.white70,
+    cursorColor: kNovumPurple,
+    inputDecorationTheme: InputDecorationTheme(
+      border: UnderlineInputBorder(borderSide: BorderSide(
+        width: 1.0,
+        color: Colors.black26,
+      )),
+      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(
+        width: 1.0,
+        color: Colors.black26,
+      )),
+      hasFloatingPlaceholder: false,
+    ),
+
+    dialogBackgroundColor: Colors.white,
+    dialogTheme: DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
+    ),
 
   );
 

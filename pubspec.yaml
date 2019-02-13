@@ -27,6 +27,7 @@ dependencies:
   flutter_custom_tabs: ^0.4.0
   newsapi_client: ^0.2.5+1
   flutter_sparkline: ^0.1.0
+  shared_preferences: ^0.5.1
 
 dev_dependencies:
   flutter_test:

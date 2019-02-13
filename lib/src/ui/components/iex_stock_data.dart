@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../models/symbol_model.dart';
 import '../../models/chart_model.dart';
 import '../../blocs/iex_bloc.dart';
+import '../screens/stock_settings.dart';
+import './stock_data_header.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
@@ -33,26 +35,26 @@ class IexStockData extends StatelessWidget {
                       builder: (BuildContext context, AsyncSnapshot<ChartModel> secondSnapshot) {
                         if (secondSnapshot.hasData) {
                           final dateTime = secondSnapshot.data.chart.keys.toList()[0];
-                          final String date = dateTime.toString().split(' ')[0];
                           return Column(
                             children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      'Stocks',
-                                      style: Theme.of(context).textTheme.headline,
-                                    ),
-                                    Text(
-                                      ' • $date',
-                                      style: Theme.of(context).textTheme.headline.copyWith(
-                                        fontFamily: 'Libre Franklin',
-                                        fontSize: 18.0,
-                                        color: Colors.black54,
+                              StockDataHeader(
+                                dateTime: dateTime,
+                                action: IconButton(
+                                  icon: Icon(Icons.settings),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) => StockSettings(
+                                        bloc: bloc,
+                                        symbols: snapshot.data,
                                       ),
-                                    ),
-                                  ],
+                                    ).then((updateSymbols) {
+                                      if (updateSymbols != null && updateSymbols) {
+                                        bloc.requestSymbols();
+                                      }
+                                    });
+                                    
+                                  },
                                 ),
                               ),
                               Container(
