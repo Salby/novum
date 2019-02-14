@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import './ui/theme/theme.dart';
 import './ui/screens/browse.dart';
 import './ui/screens/search.dart';
+import './ui/screens/auth.dart';
 import 'package:flutter_villains/villain.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
@@ -23,8 +24,9 @@ class NovumApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: kNovumTheme,
       title: 'Novum',
+      home: Auth(),
       routes: {
-        '/': (context) => Browse(title: 'Front page'),
+        '/home': (context) => Browse(title: 'Front page'),
         '/search': (context) => Search(),
         '/business': (context) => Browse(title: 'Business', category: Categories.business),
         '/entertainment': (context) => Browse(title: 'Entertainment', category: Categories.entertainment),

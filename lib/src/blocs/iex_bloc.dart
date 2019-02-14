@@ -1,4 +1,4 @@
-import '../resources/repositoy.dart';
+import '../resources/repository.dart';
 import '../models/symbol_model.dart';
 import '../models/chart_model.dart';
 import 'package:rxdart/rxdart.dart';

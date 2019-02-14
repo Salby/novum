@@ -1,5 +1,5 @@
 import 'package:rxdart/rxdart.dart';
-import '../resources/repositoy.dart';
+import '../resources/repository.dart';
 import '../models/article_collection_model.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
