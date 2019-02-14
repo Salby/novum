@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- Added authentication screen where you have to provide you [newsapi.org](https://newsapi.org) API key.
+- Added stock settings screen where you can choose what symbols to follow.
+
 ### Fixed
 - Fixed standard iOS and android icon.
 - Fixed adaptive icon being slightly blurry.
