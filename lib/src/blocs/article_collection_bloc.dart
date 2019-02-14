@@ -29,5 +29,3 @@ class ArticleCollectionBloc {
   }
 
 }
-
-final bloc = ArticleCollectionBloc();
