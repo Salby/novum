@@ -3,15 +3,17 @@ import '../secrets/news_api_key.dart';
 
 class AuthBloc {
 
-  final StreamController<String> key = StreamController();
+  final StreamController<String> _key = StreamController();
+
+  Stream<String> get key => _key.stream;
 
   getKey() async {
-    final String _key = await kNewsApiKey();
-    key.sink.add(_key);
+    final String key = await kNewsApiKey();
+    _key.sink.add(key);
   }
 
   dispose() {
-    key.close();
+    _key.close();
   }
 
 }

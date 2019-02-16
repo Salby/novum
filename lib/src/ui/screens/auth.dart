@@ -12,7 +12,7 @@ class Auth extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: StreamBuilder<String>(
-          stream: bloc.key.stream,
+          stream: bloc.key,
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
 
             if (snapshot.hasData) {

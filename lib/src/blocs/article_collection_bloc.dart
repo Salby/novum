@@ -7,11 +7,13 @@ class ArticleCollectionBloc {
 
   final _repository = Repository();
 
-  final StreamController<ArticleCollectionModel> articles = StreamController();
+  final StreamController<ArticleCollectionModel> _articles = StreamController();
+
+  Stream<ArticleCollectionModel> get articles => _articles.stream;
 
   requestArticles(TopHeadlines endpoint) async {
     ArticleCollectionModel articleCollection = await _repository.newsApiRequest(endpoint);
-    articles.sink.add(articleCollection);
+    _articles.sink.add(articleCollection);
   }
   searchArticles(String query) async {
     final DateTime now = DateTime.now();
@@ -20,11 +22,11 @@ class ArticleCollectionBloc {
       from: now.subtract(Duration(days: 14)),
       to: now,
     ));
-    articles.sink.add(articleCollection);
+    _articles.sink.add(articleCollection);
   }
 
   dispose() {
-    articles.close();
+    _articles.close();
   }
 
 }

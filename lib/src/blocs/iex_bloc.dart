@@ -9,16 +9,19 @@ class IexBloc {
 
   SymbolModel activeSymbol;
 
-  final StreamController<List<SymbolModel>> symbols = StreamController();
-  final StreamController<ChartModel> chart = StreamController();
+  final StreamController<List<SymbolModel>> _symbols = StreamController();
+  final StreamController<ChartModel> _chart = StreamController();
+
+  Stream<List<SymbolModel>> get symbols => _symbols.stream;
+  Stream<ChartModel> get chart => _chart.stream;
 
   requestSymbols() async {
     List<SymbolModel> symbolList = await _repository.iexApiSymbols();
-    symbols.sink.add(symbolList);
+    _symbols.sink.add(symbolList);
   }
   requestChart(SymbolModel symbol) async {
-    ChartModel _chart = await _repository.iexApiChart(symbol);
-    chart.sink.add(_chart);
+    ChartModel chart = await _repository.iexApiChart(symbol);
+    _chart.sink.add(chart);
     activeSymbol = symbol;
   }
   setSymbols(List<String> symbols) async {
@@ -26,8 +29,8 @@ class IexBloc {
   }
 
   dispose() {
-    symbols.close();
-    chart.close();
+    _symbols.close();
+    _chart.close();
   }
 
 }
