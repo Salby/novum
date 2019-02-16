@@ -104,7 +104,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
                   /// Builds list of articles from [bloc.articles].
                   /// Shows skeleton-screen if stream is empty.
                   StreamBuilder(
-                    stream: widget.bloc.articles,
+                    stream: widget.bloc.articles.stream,
                     builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
                       if (snapshot.hasData) {
                         return ArticleList(

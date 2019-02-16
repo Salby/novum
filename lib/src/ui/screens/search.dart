@@ -115,7 +115,7 @@ class _Results extends StatelessWidget {
   Widget build(BuildContext context) {
     final padding = EdgeInsets.symmetric(vertical: 20.0);
     return StreamBuilder(
-      stream: bloc.articles,
+      stream: bloc.articles.stream,
       builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
         if (snapshot.hasData) {
           // Build list of search results.

@@ -25,13 +25,13 @@ class IexStockData extends StatelessWidget {
         children: <Widget>[
 
           StreamBuilder(
-            stream: bloc.symbols,
+            stream: bloc.symbols.stream,
             builder: (BuildContext context, AsyncSnapshot<List<SymbolModel>> snapshot) {
               if (snapshot.hasData) {
                 return Column(
                   children: <Widget>[
                     StreamBuilder(
-                      stream: bloc.chart,
+                      stream: bloc.chart.stream,
                       builder: (BuildContext context, AsyncSnapshot<ChartModel> secondSnapshot) {
                         if (secondSnapshot.hasData) {
                           final dateTime = secondSnapshot.data.chart.keys.toList()[0];

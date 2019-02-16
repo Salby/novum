@@ -1,19 +1,17 @@
+import 'dart:async';
 import '../secrets/news_api_key.dart';
-import 'package:rxdart/rxdart.dart';
 
 class AuthBloc {
 
-  final _keyFetcher = PublishSubject<String>();
-
-  Observable<String> get key => _keyFetcher.stream;
+  final StreamController<String> key = StreamController();
 
   getKey() async {
-    final String key = await kNewsApiKey();
-    _keyFetcher.sink.add(key);
+    final String _key = await kNewsApiKey();
+    key.sink.add(_key);
   }
 
   dispose() {
-    _keyFetcher.close();
+    key.close();
   }
 
 }
