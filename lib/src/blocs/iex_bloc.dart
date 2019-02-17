@@ -1,25 +1,27 @@
+import 'dart:async';
 import '../resources/repository.dart';
 import '../models/symbol_model.dart';
 import '../models/chart_model.dart';
-import 'package:rxdart/rxdart.dart';
 
 class IexBloc {
 
   final _repository = Repository();
-  final _symbolsFetcher = PublishSubject<List<SymbolModel>>();
-  final _chartFetcher = PublishSubject<ChartModel>();
+
   SymbolModel activeSymbol;
 
-  Observable<List<SymbolModel>> get symbols => _symbolsFetcher.stream;
-  Observable<ChartModel> get chart => _chartFetcher.stream;
+  final StreamController<List<SymbolModel>> _symbols = StreamController();
+  final StreamController<ChartModel> _chart = StreamController();
+
+  Stream<List<SymbolModel>> get symbols => _symbols.stream;
+  Stream<ChartModel> get chart => _chart.stream;
 
   requestSymbols() async {
     List<SymbolModel> symbolList = await _repository.iexApiSymbols();
-    _symbolsFetcher.sink.add(symbolList);
+    _symbols.sink.add(symbolList);
   }
   requestChart(SymbolModel symbol) async {
     ChartModel chart = await _repository.iexApiChart(symbol);
-    _chartFetcher.sink.add(chart);
+    _chart.sink.add(chart);
     activeSymbol = symbol;
   }
   setSymbols(List<String> symbols) async {
@@ -27,8 +29,8 @@ class IexBloc {
   }
 
   dispose() {
-    _symbolsFetcher.close();
-    _chartFetcher.close();
+    _symbols.close();
+    _chart.close();
   }
 
 }
