@@ -15,7 +15,7 @@ class NavigationDrawer extends StatelessWidget {
             DrawerHeader(),
 
             // Drawer navigatio  items.
-            DrawerItem(title: 'Front page', route: '/'),
+            DrawerItem(title: 'Front page', route: '/home'),
             DrawerItem(title: 'Business', route: '/business'),
             DrawerItem(title: 'Entertainment', route: '/entertainment'),
             DrawerItem(title: 'Health', route: '/health'),
