@@ -12,6 +12,7 @@ final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
   statusBarColor: Colors.grey[100],
   systemNavigationBarColor: Colors.white,
   systemNavigationBarIconBrightness: Brightness.dark,
+  systemNavigationBarDividerColor: Colors.black26,
 );
 
 class NovumApp extends StatelessWidget {
