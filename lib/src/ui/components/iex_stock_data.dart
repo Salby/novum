@@ -34,38 +34,40 @@ class IexStockData extends StatelessWidget {
                       stream: bloc.chart,
                       builder: (BuildContext context, AsyncSnapshot<ChartModel> secondSnapshot) {
                         if (secondSnapshot.hasData) {
-                          final dateTime = secondSnapshot.data.chart.keys.toList()[0];
-                          return Column(
-                            children: <Widget>[
-                              StockDataHeader(
-                                dateTime: dateTime,
-                                action: IconButton(
-                                  icon: Icon(Icons.settings),
-                                  onPressed: () async {
-                                    await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) => StockSettings(
-                                        bloc: bloc,
-                                        symbols: snapshot.data,
-                                      ),
-                                    ).then((updateSymbols) {
-                                      if (updateSymbols != null && updateSymbols) {
-                                        bloc.requestSymbols();
-                                      }
-                                    });
-                                    
-                                  },
+                          if (secondSnapshot.data.chart.isNotEmpty) {
+                            return Column(
+                              children: <Widget>[
+                                StockDataHeader(
+                                  chart: secondSnapshot.data,
+                                  action: IconButton(
+                                    icon: Icon(Icons.settings),
+                                    onPressed: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) => StockSettings(
+                                          bloc: bloc,
+                                          symbols: snapshot.data,
+                                        ),
+                                      ).then((updateSymbols) {
+                                        if (updateSymbols != null && updateSymbols) {
+                                          bloc.requestSymbols();
+                                        }
+                                      });
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                height: 112.0,
-                                child: Sparkline(
-                                  data: secondSnapshot.data.chart.values.toList(),
-                                  lineColor: Theme.of(context).accentColor,
+                                Container(
+                                  height: 112.0,
+                                  child: Sparkline(
+                                    data: secondSnapshot.data.chart.values.toList(),
+                                    lineColor: Theme.of(context).accentColor,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
+                              ],
+                            );
+                          } else {
+                            bloc.requestChart(snapshot.data[1]);
+                          }
                         }
                         bloc.requestChart(snapshot.data[0]);
                         return Container(height: 112.0);

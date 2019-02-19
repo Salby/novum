@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import '../../models/chart_model.dart';
 
 class StockDataHeader extends StatelessWidget {
 
   StockDataHeader({
-    @required this.dateTime,
+    @required this.chart,
     this.action,
   });
 
-  final DateTime dateTime;
+  final ChartModel chart;
   final Widget action;
 
   @override
   Widget build(BuildContext context) {
-    final String date = dateTime.toString().split(' ')[0];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
@@ -23,15 +23,16 @@ class StockDataHeader extends StatelessWidget {
           Row(
             children: <Widget>[
               Text(
-                'Stocks',
+                'Stocks ',
                 style: Theme.of(context).textTheme.headline,
               ),
               Text(
-                ' • $date',
+                '• ${chart.from} - ${chart.to}',
                 style: Theme.of(context).textTheme.headline.copyWith(
                   fontFamily: 'Libre Franklin',
                   fontSize: 18.0,
                   color: Colors.black54,
+                  height: 0.8,
                 ),
               ),
             ],

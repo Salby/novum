@@ -26,7 +26,7 @@ class IexApiProvider {
   }
 
   Future<ChartModel> chart(SymbolModel symbol) async {
-    final response = await client.get(urlPrefix + '/stock/${symbol.symbol}/chart/1d');
+    final response = await client.get(urlPrefix + '/stock/${symbol.symbol}/chart/');
     List<dynamic> parsedJson = json.decode(response.body);
     return ChartModel.fromJson(symbol, parsedJson);
   }

@@ -5,35 +5,36 @@ class ChartModel {
   ChartModel({
     this.symbol,
     this.chart,
+    this.from,
+    this.to,
   });
 
   ChartModel.fromJson(SymbolModel symbolModel, List<dynamic> parsedJson) :
     symbol = symbolModel,
-    chart = _buildChart(parsedJson);
+    chart = _buildChart(parsedJson),
+    from = parsedJson[0]['label'],
+    to = parsedJson[parsedJson.length - 1]['label'];
 
   final SymbolModel symbol;
   final Map<DateTime, double> chart;
+  final String from;
+  final String to;
 
   static Map<DateTime, double> _buildChart(List<dynamic> parsedJson) {
     Map<DateTime, double> chart = {};
     for (Map<String, dynamic> json in parsedJson) {
-      /// Get date and time from [json].
-      final String year = json['date'].toString().substring(0, 4);
-      final String month = json['date'].toString().substring(4, 6);
-      final String day = json['date'].toString().substring(6);
-      final String time = json['minute'].toString() + ':00';
 
       /// Merge date and time information into a [DateTime] object.
-      final dateTime = DateTime.parse('$year-$month-$day $time');
+      final dateTime = DateTime.parse(json['date']);
 
-      if (json['marketAverage'] is String) {
-        json['marketAverage'] = double.tryParse(json['marketAverage']);
-      } else if (json['marketAverage'] is int) {
-        json['marketAverage'] = json['marketAverage'].toDouble();
+      if (json['volume'] is String) {
+        json['volume'] = double.tryParse(json['volume']);
+      } else if (json['volume'] is int) {
+        json['volume'] = json['volume'].toDouble();
       }
 
       /// Add key-value pair to [chart].
-      chart[dateTime] = json['marketAverage'];
+      chart[dateTime] = json['volume'];
     }
     return chart;
   }
