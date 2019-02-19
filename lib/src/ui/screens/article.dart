@@ -130,8 +130,13 @@ class _Content extends StatelessWidget {
 
   Widget articleCategory(BuildContext context) {
     List<String> categories = ['us'];
-    if (category != null)
-      categories.add(category);
+    if (category != null) {
+      if (category == 'home') {
+        categories.add('front page');
+      } else {
+        categories.add(category);
+      }
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 38.0,
