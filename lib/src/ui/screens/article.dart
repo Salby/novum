@@ -68,11 +68,34 @@ class _Content extends StatelessWidget {
 
         articleCategory(context),
 
+        SizedBox(height: 24.0),
+
         title(context),
+
+        SizedBox(height: 8.0),
+
+        source(context),
+
+        SizedBox(height: 20.0),
 
         preview(context),
 
       ],
+    );
+  }
+
+  Widget source(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      child: Text(
+        article.source != null
+          ? 'Source: ${article.source}'
+          : 'Error: No source found.',
+        style: Theme.of(context).textTheme.body1.copyWith(
+          fontWeight: FontWeight.w500,
+          color: Colors.black54,
+        ),
+      ),
     );
   }
 
@@ -91,7 +114,7 @@ class _Content extends StatelessWidget {
   Widget preview(BuildContext context) {
     if (article.content != null) {
       return Padding(
-        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: Text(
           article.content,
           style: Theme.of(context).textTheme.body1.copyWith(
@@ -145,7 +168,7 @@ class _Content extends StatelessWidget {
       ? ArticleTile.cleanTitle(article.title)
       : '(No title)';
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(
         title,
         style: Theme.of(context).textTheme.headline.copyWith(
