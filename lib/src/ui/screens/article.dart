@@ -89,16 +89,20 @@ class _Content extends StatelessWidget {
   }
 
   Widget preview(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
-      child: Text(
-        article.content,
-        style: Theme.of(context).textTheme.body1.copyWith(
-          fontSize: 16.0,
-          height: 1.3,
+    if (article.content != null) {
+      return Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0.0),
+        child: Text(
+          article.content,
+          style: Theme.of(context).textTheme.body1.copyWith(
+            fontSize: 16.0,
+            height: 1.3,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget articleCategory(BuildContext context) {
