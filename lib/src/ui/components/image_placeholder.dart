@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 
 class ImagePlaceholder extends StatelessWidget {
 
-  ImagePlaceholder(this.text);
+  ImagePlaceholder(this.text, {
+    this.width,
+    this.height,
+  });
 
   final String text;
+  final double width;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       alignment: Alignment.center,
       decoration: BoxDecoration(
         gradient: LinearGradient(

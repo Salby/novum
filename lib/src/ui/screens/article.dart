@@ -107,7 +107,10 @@ class _Content extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else {
-      return ImagePlaceholder('No image');
+      return ImagePlaceholder(
+        'No image',
+        height: 200.0,
+      );
     }
   }
 
