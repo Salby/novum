@@ -5,6 +5,7 @@
 ### Added
 - Added authentication screen where you have to provide you [newsapi.org](https://newsapi.org) API key.
 - Added stock settings screen where you can choose what symbols to follow.
+- Added `width` and `height` properties to `ImagePlaceholder`.
 
 ### Changed
 - Changed symbol volume chart to show data from more days instead of just showing the values from the current day.
@@ -12,6 +13,7 @@
 ### Fixed
 - Fixed standard iOS and android icon.
 - Fixed adaptive icon being slightly blurry.
+- Auth screen now always validates the stored API key, in case it has been disabled.
 
 ## 1.0.3 - 2019-02-12
 
