@@ -77,6 +77,7 @@ class IexStockData extends StatelessWidget {
                       height: 124.0,
                       padding: EdgeInsets.symmetric(vertical: 20.0),
                       child: ListView.separated(
+                        physics: NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
                         itemCount: 3,
