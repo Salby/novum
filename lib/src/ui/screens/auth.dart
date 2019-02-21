@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../blocs/auth_bloc.dart';
 import '../../resources/repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth extends StatelessWidget {
 
   final bloc = AuthBloc();
+  final _repository = Repository();
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class Auth extends StatelessWidget {
           stream: bloc.key,
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
 
-            if (snapshot.hasData) {
-              authenticated(context);
+            if (snapshot.hasData && snapshot.data.isNotEmpty) {
+              validate(context, snapshot.data);
               return Container(
                 alignment: Alignment.center,
                 child: CircularProgressIndicator(),
@@ -24,17 +24,44 @@ class Auth extends StatelessWidget {
             }
             bloc.getKey();
             return _AuthForm(
-              onValidated: (String validKey) async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.setString('news_api_key', validKey);
-                Navigator.pushReplacementNamed(context, '/home');
-              }
+              onTap: (String key) => validate(context, key),
             );
 
           },
         ),
       ),
     );
+  }
+
+  Future<void> validate(BuildContext context, String key) async {
+    key = key.trim();
+    final bool valid = await _repository.newsApiProvider.test(key);
+    if (valid) {
+      await bloc.setKey(key);
+      await Future.delayed(Duration(milliseconds: 300));
+      Navigator.of(context).pushReplacementNamed('/home');
+    } else {
+      await bloc.setKey('');
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Invalid API key'),
+            content: Text('The API key you have provided is not valid. You can get a valid API key from newsapi.org'),
+            actions: <Widget>[
+              FlatButton(
+                textColor: Theme.of(context).accentColor,
+                highlightColor: Theme.of(context).accentColor.withOpacity(.1),
+                splashColor: Theme.of(context).accentColor.withOpacity(.1),
+                child: Text('OK'),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void authenticated(BuildContext context) async {
@@ -47,11 +74,10 @@ class Auth extends StatelessWidget {
 class _AuthForm extends StatefulWidget {
 
   _AuthForm({
-    this.onValidated,
+    this.onTap,
   });
 
-  final Function onValidated;
-  final _repository = Repository();
+  final Function onTap;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -79,7 +105,7 @@ class _AuthFormState extends State<_AuthForm> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 36.0),
           child: Text(
-            'To use Novum the app needs an API key to be able to fetch the latest news for you.',
+            'To use Novum you must provide an API key from newsapi.org',
             style: Theme.of(context).textTheme.body1.copyWith(
               fontSize: 16.0,
             ),
@@ -104,18 +130,7 @@ class _AuthFormState extends State<_AuthForm> {
           color: Theme.of(context).accentColor,
           textColor: Colors.white,
           child: Text('Submit'),
-          onPressed: () async {
-            final String value = textController.value.text;
-            final bool valid = await widget._repository.newsApiProvider.test(value);
-            if (valid) {
-              widget.onValidated(value);
-            } else {
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('This API key is not valid.'),
-                duration: Duration(milliseconds: 4000),
-              ));
-            }
-          },
+          onPressed: () => widget.onTap(textController.value.text),
         ),
 
       ],
