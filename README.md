@@ -16,7 +16,7 @@ Novum is powered by [newsapi.org](https://newsapi.org) for news articles and [ie
 ## Coming soon
 
 - Filtering sources.
-- Automatic dark mode (can also be turned on manually).
+- Dark mode.
 
 ## Contributing
 
