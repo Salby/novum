@@ -1,3 +1,4 @@
+import 'dart:async';
 import './news_api_provider.dart';
 import './iex_api_provider.dart';
 import './shared_preferences_provider.dart';

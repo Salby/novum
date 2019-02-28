@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import './shared_preferences_provider.dart';
 import '../models/symbol_model.dart';
