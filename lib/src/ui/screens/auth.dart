@@ -38,10 +38,13 @@ class Auth extends StatelessWidget {
     key = key.trim();
     final bool valid = await _repository.newsApiProvider.test(key);
     if (valid) {
+      // Navigate to the home screen if the API key is
+      // valid.
       await bloc.setKey(key);
       await Future.delayed(Duration(milliseconds: 300));
       Navigator.of(context).pushReplacementNamed('/home');
     } else {
+      // Show an error if the API key isn't valid.
       await bloc.setKey('');
       showDialog(
         context: context,
@@ -53,8 +56,6 @@ class Auth extends StatelessWidget {
             actions: <Widget>[
               FlatButton(
                 textColor: Theme.of(context).accentColor,
-                highlightColor: Theme.of(context).accentColor.withOpacity(.1),
-                splashColor: Theme.of(context).accentColor.withOpacity(.1),
                 child: Text('OK'),
                 onPressed: () => Navigator.pop(context),
               ),
@@ -65,6 +66,7 @@ class Auth extends StatelessWidget {
     }
   }
 
+  /// Shows the home screen.
   void authenticated(BuildContext context) async {
     await Future.delayed(Duration(milliseconds: 300));
     Navigator.pushReplacementNamed(context, '/home');

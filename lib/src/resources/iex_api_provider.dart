@@ -11,6 +11,8 @@ class IexApiProvider {
   final client = Client();
   final sharedPreferencesProvider = SharedPreferencesProvider();
 
+  /// Returns a list of [SymbolModel]s from the three
+  /// symbols stored in shared preferences.
   Future<List<SymbolModel>> symbols() async {
     List<String> symbols = await sharedPreferencesProvider.getSymbols();
     if (symbols == null) {
@@ -26,6 +28,7 @@ class IexApiProvider {
     return symbolList;
   }
 
+  /// Returns the current [ChartModel] of a [SymbolModel].
   Future<ChartModel> chart(SymbolModel symbol) async {
     final response = await client.get(urlPrefix + '/stock/${symbol.symbol}/chart/');
     List<dynamic> parsedJson = json.decode(response.body);

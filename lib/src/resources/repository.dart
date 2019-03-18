@@ -13,15 +13,19 @@ class Repository {
   final iexApiProvider = IexApiProvider();
   final sharedPreferencesProvider = SharedPreferencesProvider();
 
+  /// Returns a collection of [ArticleModel]s from the
+  /// given endpoint.
   Future<ArticleCollectionModel> newsApiRequest(Endpoint endpoint) async {
     final response = await newsApiProvider.request(endpoint);
     return response;
   }
 
+  /// Returns the stored stock symbols.
   Future<List<SymbolModel>> iexApiSymbols() async {
     final response = await iexApiProvider.symbols();
     return response;
   }
+  /// Returns a [ChartModel] of the given symbol.
   Future<ChartModel> iexApiChart(SymbolModel symbol) async {
     final response = await iexApiProvider.chart(symbol);
     return response;

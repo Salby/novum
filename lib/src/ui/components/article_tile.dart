@@ -22,13 +22,12 @@ class ArticleTile extends StatelessWidget {
       fontWeight: FontWeight.w500,
     )),
     thumbnail = article.imageUrl != null
-      //? Image.network(article.imageUrl, fit: BoxFit.cover)
-      ? FadeInImage.memoryNetwork(
-        image: article.imageUrl,
-        placeholder: kTransparentImage,
-        fit: BoxFit.cover,
-      )
-      : ImagePlaceholder('No image.'),
+        ? FadeInImage.memoryNetwork(
+          image: article.imageUrl,
+          placeholder: kTransparentImage,
+          fit: BoxFit.cover,
+        )
+        : ImagePlaceholder('No image.'),
     published = Text(
       _timestamp(article.published),
       style: Theme.of(context).textTheme.subtitle.copyWith(
@@ -51,9 +50,9 @@ class ArticleTile extends StatelessWidget {
       return true;
     });
     final String category = currentRoute.settings.name != '/search'
-                          && currentRoute.settings.name != null
-      ? currentRoute.settings.name.replaceAll('/', '')
-      : null;
+        && currentRoute.settings.name != null
+            ? currentRoute.settings.name.replaceAll('/', '')
+            : null;
     return InkWell(
       onTap: () => Navigator.push(context, FadeRoute(Article(article, category: category))),
       child: Container(
@@ -88,7 +87,7 @@ class ArticleTile extends StatelessWidget {
             children: <Widget>[
 
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: published
               ),
 
@@ -114,7 +113,7 @@ class ArticleTile extends StatelessWidget {
             children: <Widget>[
 
               Padding(
-                padding: EdgeInsets.only(bottom: 6.0),
+                padding: const EdgeInsets.only(bottom: 6.0),
                 child: published
               ),
 
@@ -127,7 +126,7 @@ class ArticleTile extends StatelessWidget {
         Flexible(
           flex: 1,
           child: Padding(
-            padding: EdgeInsets.only(left: 20.0),
+            padding: const EdgeInsets.only(left: 20.0),
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -147,6 +146,8 @@ class ArticleTile extends StatelessWidget {
     return split[0];
   }
 
+  /// Returns the article's published date in a readable
+  /// form.
   static String _timestamp(DateTime oldDate) {
     String timestamp;
     DateTime currentDate = DateTime.now();

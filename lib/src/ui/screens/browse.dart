@@ -26,6 +26,14 @@ class Browse extends StatefulWidget {
 
 class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
+  /// The [_controller] controls the state of the
+  /// [NovumAppBar].
+  ///
+  /// If [_controller.isCompleted] the app bar is
+  /// collapsed.
+  ///
+  /// If [_controller.isDismissed] the app bar is
+  /// expanded.
   AnimationController _controller;
   int _pageSize = 20;
 
@@ -46,21 +54,21 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final listPadding = EdgeInsets.only(top: 67.0, bottom: 20.0);
+    final listPadding = const EdgeInsets.only(top: 67.0, bottom: 20.0);
     final Widget readMore = widget.category != null
-      ? FlatButton(
-        child: Text(
-          'Read More',
-          style: Theme.of(context).textTheme.button.copyWith(
-            fontSize: 18.0,
+        ? FlatButton(
+          child: Text(
+            'Read More',
+            style: Theme.of(context).textTheme.button.copyWith(
+              fontSize: 18.0,
+            ),
           ),
-        ),
-        onPressed: () => _moreContent(),
-      )
-      : Container();
+          onPressed: () => _moreContent(),
+        )
+        : Container();
     final Widget stocks = widget.category == null
-      ? IexStockData()
-      : Container();
+        ? IexStockData()
+        : Container();
 
     return Scaffold(
       drawer: NavigationDrawer(),
@@ -75,8 +83,8 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
             /// and determines if the app bar should expand or collapse
             /// depending on the scroll direction.
             /// 
-            /// [controller.reverse()] expands the app bar.
-            /// [controller.forward()] collapses the app bar.
+            /// [_controller.reverse()] expands the app bar.
+            /// [_controller.forward()] collapses the app bar.
             child: NotificationListener<ScrollUpdateNotification>(
               onNotification: (notification) {
 
@@ -135,7 +143,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
 
           /// Custom app bar
           /// 
-          /// Appears when MediaQuery is availabe (doesn't return 0.0).
+          /// Appears when [MediaQuery] is available (doesn't return 0.0).
           Align(
             alignment: Alignment.topCenter,
             child: MediaQuery.of(context).size.width == 0.0

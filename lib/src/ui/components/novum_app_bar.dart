@@ -39,6 +39,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
     // Use the width of the viewport to animate the app bar.
     vwidth = MediaQuery.of(widget.context).size.width;
     super.initState();
+
     /// First opacity animation.
     /// 
     /// This animation is used to animate the opacity of
@@ -58,6 +59,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
         curve: Curves.easeIn,
       ),
     ));
+
     /// Second opacity animation.
     /// 
     /// This animation is used to animate the opacity of
@@ -76,6 +78,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
         curve: Curves.easeOut,
       ),
     ));
+
     /// Size animation.
     /// 
     /// This animation is used to animate the width of the appBar
@@ -90,6 +93,7 @@ class NovumAppBarState extends State<NovumAppBar> with SingleTickerProviderState
         curve: Curves.fastOutSlowIn,
       ),
     ));
+
     /// Radius animation.
     /// 
     /// This animation is used to animate the size of the cut
