@@ -7,23 +7,15 @@ import './ui/screens/auth.dart';
 import 'package:flutter_villains/villain.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
-final SystemUiOverlayStyle uiStyle = SystemUiOverlayStyle(
-  statusBarIconBrightness: Brightness.dark,
-  statusBarColor: Colors.grey[100],
-  systemNavigationBarColor: Colors.white,
-  systemNavigationBarIconBrightness: Brightness.dark,
-  systemNavigationBarDividerColor: Colors.black26,
-);
-
 class NovumApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(uiStyle);
     return MaterialApp(
       navigatorObservers: [VillainTransitionObserver()],
       debugShowCheckedModeBanner: false,
-      theme: kNovumTheme,
+      theme: Themes.light.theme,
+      darkTheme: Themes.dark.theme,
       title: 'Novum',
       home: Auth(),
       routes: {

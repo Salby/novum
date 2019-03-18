@@ -16,4 +16,15 @@ class SharedPreferencesProvider {
     return true;
   }
 
+  Future<String> getTheme() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('theme') ?? 'default';
+  }
+
+  Future<bool> setTheme(String code) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme', code);
+    return true;
+  }
+
 }
