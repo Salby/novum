@@ -13,11 +13,6 @@ Novum is powered by [newsapi.org](https://newsapi.org) for news articles and [ie
 - Browse and search articles from many sources, made possible by the [newsapi.org API](https://newsapi.org).
 - Read previews and share articles.
 
-## Coming soon
-
-- Filtering sources.
-- Dark mode.
-
 ## Contributing
 
 You are very welcome to contribute to Novum with bug reports, code, or just spelling mistakes. I appreciate every contribution :raised_hands:
