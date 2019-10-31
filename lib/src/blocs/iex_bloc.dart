@@ -4,7 +4,6 @@ import '../models/symbol_model.dart';
 import '../models/chart_model.dart';
 
 class IexBloc {
-
   final _repository = Repository();
 
   SymbolModel activeSymbol;
@@ -16,14 +15,22 @@ class IexBloc {
   Stream<ChartModel> get chart => _chart.stream;
 
   requestSymbols() async {
-    List<SymbolModel> symbolList = await _repository.iexApiSymbols();
+    List<SymbolModel> symbolList = [];
+    try {
+      symbolList = await _repository.iexApiSymbols();
+    } catch (e) {
+      // Couldn't find symbols.
+      print('Could\'t find symbols: $e');
+    }
     _symbols.sink.add(symbolList);
   }
+
   requestChart(SymbolModel symbol) async {
     ChartModel chart = await _repository.iexApiChart(symbol);
     _chart.sink.add(chart);
     activeSymbol = symbol;
   }
+
   setSymbols(List<String> symbols) async {
     await _repository.sharedPreferencesProvider.setSymbols(symbols: symbols);
   }
@@ -32,5 +39,4 @@ class IexBloc {
     _symbols.close();
     _chart.close();
   }
-
 }

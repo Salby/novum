@@ -8,103 +8,118 @@ import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class IexStockData extends StatelessWidget {
-
   final bloc = IexBloc();
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle attributionText = Theme.of(context).textTheme.body1.copyWith(
-      color: Colors.black54,
-    );
-    final TextStyle attributionLink = Theme.of(context).textTheme.body1.copyWith(
-      color: Theme.of(context).accentColor,
-      fontWeight: FontWeight.w500,
-    );
+    final TextStyle attributionText =
+        Theme.of(context).textTheme.body1.copyWith(
+              color: Colors.black54,
+            );
+    final TextStyle attributionLink =
+        Theme.of(context).textTheme.body1.copyWith(
+              color: Theme.of(context).accentColor,
+              fontWeight: FontWeight.w500,
+            );
     return Container(
       child: Column(
         children: <Widget>[
-
           StreamBuilder(
             stream: bloc.symbols,
-            builder: (BuildContext context, AsyncSnapshot<List<SymbolModel>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<SymbolModel>> snapshot) {
               if (snapshot.hasData) {
-                return Column(
-                  children: <Widget>[
-                    StreamBuilder(
-                      stream: bloc.chart,
-                      builder: (BuildContext context, AsyncSnapshot<ChartModel> secondSnapshot) {
-                        if (secondSnapshot.hasData) {
-                          if (secondSnapshot.data.chart.isNotEmpty) {
-                            return Column(
-                              children: <Widget>[
-                                StockDataHeader(
-                                  chart: secondSnapshot.data,
-                                  action: IconButton(
-                                    icon: Icon(Icons.settings),
-                                    onPressed: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) => StockSettings(
-                                          bloc: bloc,
-                                          symbols: snapshot.data,
-                                        ),
-                                      ).then((updateSymbols) {
-                                        if (updateSymbols != null && updateSymbols) {
-                                          bloc.requestSymbols();
-                                        }
-                                      });
-                                    },
+                if (snapshot.data.isNotEmpty) {
+                  return Column(
+                    children: <Widget>[
+                      StreamBuilder(
+                        stream: bloc.chart,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<ChartModel> secondSnapshot) {
+                          if (secondSnapshot.hasData) {
+                            if (secondSnapshot.data.chart.isNotEmpty) {
+                              return Column(
+                                children: <Widget>[
+                                  StockDataHeader(
+                                    chart: secondSnapshot.data,
+                                    action: IconButton(
+                                      icon: Icon(Icons.settings),
+                                      onPressed: () async {
+                                        await showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              StockSettings(
+                                            bloc: bloc,
+                                            symbols: snapshot.data,
+                                          ),
+                                        ).then((updateSymbols) {
+                                          if (updateSymbols != null &&
+                                              updateSymbols) {
+                                            bloc.requestSymbols();
+                                          }
+                                        });
+                                      },
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  height: 112.0,
-                                  child: Sparkline(
-                                    data: secondSnapshot.data.chart.values.toList(),
-                                    lineColor: Theme.of(context).accentColor,
+                                  Container(
+                                    height: 112.0,
+                                    child: Sparkline(
+                                      data: secondSnapshot.data.chart.values
+                                          .toList(),
+                                      lineColor: Theme.of(context).accentColor,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            bloc.requestChart(snapshot.data[1]);
+                                ],
+                              );
+                            } else {
+                              bloc.requestChart(snapshot.data[1]);
+                            }
                           }
-                        }
-                        bloc.requestChart(snapshot.data[0]);
-                        return Container(height: 112.0);
-                      },
-                    ),
-                    Container(
-                      height: 124.0,
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
-                      child: ListView.separated(
-                        physics: NeverScrollableScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: 3,
-                        separatorBuilder: (BuildContext context, int index) {
-                          return Container(
-                            width: 1.0,
-                            color: Theme.of(context).dividerColor,
-                          );
-                        },
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              bloc.requestChart(snapshot.data[index]);
-                              bloc.requestSymbols();
-                            },
-                            child: _DataTile(
-                              title: snapshot.data[index].symbol,
-                              subtitle: snapshot.data[index].latestPrice.toString(),
-                              change: snapshot.data[index].extendedChange,
-                              active: snapshot.data[index] == bloc.activeSymbol,
-                            ),
-                          );
+                          bloc.requestChart(snapshot.data[0]);
+                          return Container(height: 112.0);
                         },
                       ),
-                    ),
-                  ],
-                );
+                      Container(
+                        height: 124.0,
+                        padding: EdgeInsets.symmetric(vertical: 20.0),
+                        child: ListView.separated(
+                          physics: NeverScrollableScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: 3,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return Container(
+                              width: 1.0,
+                              color: Theme.of(context).dividerColor,
+                            );
+                          },
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                bloc.requestChart(snapshot.data[index]);
+                                bloc.requestSymbols();
+                              },
+                              child: _DataTile(
+                                title: snapshot.data[index].symbol,
+                                subtitle:
+                                    snapshot.data[index].latestPrice.toString(),
+                                change: snapshot.data[index].extendedChange,
+                                active:
+                                    snapshot.data[index] == bloc.activeSymbol,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Container(
+                    height: 100.0,
+                    alignment: Alignment.center,
+                    child: Text('Sorry, we couldn\'t reach IEX'),
+                  );
+                }
               } else {
                 bloc.requestSymbols();
                 return Container(
@@ -122,19 +137,20 @@ class IexStockData extends StatelessWidget {
               children: <Widget>[
                 Text('Data provided for free by ', style: attributionText),
                 InkWell(
-                  onTap: () => _launchUrl(context, 'https://iextrading.com/developer'),
+                  onTap: () =>
+                      _launchUrl(context, 'https://iextrading.com/developer'),
                   child: Text('IEX', style: attributionLink),
                 ),
                 Text('. View ', style: attributionText),
                 InkWell(
-                  onTap: () => _launchUrl(context, 'https://iextrading.com/api-exhibit-a/'),
+                  onTap: () => _launchUrl(
+                      context, 'https://iextrading.com/api-exhibit-a/'),
                   child: Text('IEX\'s terms of use', style: attributionLink),
                 ),
                 Text('.', style: attributionText),
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -156,11 +172,9 @@ class IexStockData extends StatelessWidget {
       debugPrint(e.toString());
     }
   }
-
 }
 
 class _DataTile extends StatelessWidget {
-
   _DataTile({
     this.title,
     this.subtitle,
@@ -181,7 +195,6 @@ class _DataTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-
           Text(
             title,
             style: TextStyle(
@@ -191,9 +204,7 @@ class _DataTile extends StatelessWidget {
               color: active ? Theme.of(context).accentColor : Colors.black87,
             ),
           ),
-
           SizedBox(height: 4.0),
-
           Text(
             subtitle,
             style: TextStyle(
@@ -203,11 +214,8 @@ class _DataTile extends StatelessWidget {
               color: Colors.black54,
             ),
           ),
-
           SizedBox(height: 8.0),
-
           displayChange(context),
-
         ],
       ),
     );
@@ -216,14 +224,16 @@ class _DataTile extends StatelessWidget {
   Widget displayChange(BuildContext context) {
     bool negative = change.toString().contains('-');
     final Widget symbol = negative
-      ? Text('- ', style: Theme.of(context).textTheme.body1.copyWith(
-        color: Theme.of(context).accentColor,
-        fontWeight: FontWeight.w700,
-      ))
-      : Text('+ ', style: Theme.of(context).textTheme.body1.copyWith(
-        color: Colors.greenAccent[400],
-        fontWeight: FontWeight.w700,
-      ));
+        ? Text('- ',
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Theme.of(context).accentColor,
+                  fontWeight: FontWeight.w700,
+                ))
+        : Text('+ ',
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  color: Colors.greenAccent[400],
+                  fontWeight: FontWeight.w700,
+                ));
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -235,5 +245,4 @@ class _DataTile extends StatelessWidget {
       ],
     );
   }
-
 }
