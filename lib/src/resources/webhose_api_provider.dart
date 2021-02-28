@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class WebhoseApiProvider extends NewsApiProvider {
   static final String endpoint =
-      'https://webhose.io/filterWebContent?token=376a1b6c-bcb7-4069-9b24-b8c2f6356e78&format=json&ts=1614184632408&sort=social.facebook.likes&q=thread.country%3AES%20language%3Aspanish%20num_chars%3A%3E5000';
+      'https://webhose.io/filterWebContent?token=376a1b6c-bcb7-4069-9b24-b8c2f6356e78&format=json&ts=1614184632408&sort=social.facebook.likes&q=thread.country%3AES%20language%3Aspanish%20num_chars%3A%3E5000%20site%3Aelpais.com';
 
   final List<ArticleModel> cachedArticles = [];
 
