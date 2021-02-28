@@ -27,6 +27,8 @@ dependencies:
   newsapi_client: ^0.2.5+1
   flutter_sparkline: ^0.1.0
   shared_preferences: ^0.5.1
+  handcash_connect_sdk: ^0.1.2-dev
+  flutter_cubit: ^0.1.1
 
 dev_dependencies:
   flutter_test:

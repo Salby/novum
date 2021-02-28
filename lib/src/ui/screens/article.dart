@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../models/article_model.dart';
-import '../components/article_tile.dart';
-import '../components/image_placeholder.dart';
+import 'package:flutter_cubit/flutter_cubit.dart';
+import 'package:handcash_connect_sdk/handcash_connect_sdk.dart';
+import 'package:novum/src/blocs/paywall_bloc.dart';
 import 'package:flutter_villains/villain.dart';
+import 'package:novum/src/models/article_model.dart';
+import 'package:novum/src/ui/components/article_tile.dart';
+import 'package:novum/src/ui/components/image_placeholder.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:share/share.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -12,6 +15,7 @@ class Article extends StatelessWidget {
 
   final ArticleModel article;
   final String category;
+  final PaywallBloc bloc = PaywallBloc();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +55,7 @@ class _Content extends StatelessWidget {
 
   final ArticleModel article;
   final String category;
+  final PaywallBloc bloc = PaywallBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +77,7 @@ class _Content extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(
-        article.source != null
-            ? 'Source: ${article.source}'
-            : 'Error: No source found.',
+        article.source != null ? 'Source: ${article.source}' : 'Error: No source found.',
         style: Theme.of(context).textTheme.body1.copyWith(
               fontWeight: FontWeight.w500,
               color: Colors.black54,
@@ -101,13 +104,19 @@ class _Content extends StatelessWidget {
   Widget preview(BuildContext context) {
     if (article.content != null) {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        child: Text(
-          article.content,
-          style: Theme.of(context).textTheme.body1.copyWith(
-                fontSize: 16.0,
-                height: 1.3,
-              ),
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 140),
+        child: CubitBuilder(
+          cubit: bloc,
+          builder: (context, state) {
+            final bool isUnlocked = state is PaywallStateUnlocked;
+            return Text(
+              isUnlocked ? article.content : article.content.substring(0, 200) + ' [...]',
+              style: Theme.of(context).textTheme.body1.copyWith(
+                    fontSize: 16.0,
+                    height: 1.3,
+                  ),
+            );
+          },
         ),
       );
     } else {
@@ -156,9 +165,7 @@ class _Content extends StatelessWidget {
   }
 
   Widget title(BuildContext context) {
-    final String title = article.title != null
-        ? ArticleTile.cleanTitle(article.title)
-        : '(No title)';
+    final String title = article.title != null ? ArticleTile.cleanTitle(article.title) : '(No title)';
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Text(
@@ -172,11 +179,12 @@ class _Content extends StatelessWidget {
 }
 
 class _BottomSheet extends StatelessWidget {
+  final String url;
+  final PaywallBloc bloc = PaywallBloc();
+
   _BottomSheet({
     @required this.url,
   }) : assert(url != null);
-
-  final String url;
 
   @override
   Widget build(BuildContext context) {
@@ -189,28 +197,86 @@ class _BottomSheet extends StatelessWidget {
           elevation: 24.0,
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ButtonBar(
-                alignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  FlatButton(
-                    textColor: Theme.of(context).accentColor,
-                    child: Text('Share'),
-                    onPressed: () => _share(),
-                  ),
-                  RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    colorBrightness: Brightness.dark,
-                    child: Text('Full article'),
-                    onPressed: () => _launchUrl(context),
-                  ),
-                ],
+              padding: EdgeInsets.all(0),
+              child: CubitBuilder(
+                cubit: bloc,
+                builder: (context, state) {
+                  final bool isNotAuthenticated = state is PaywallStateUnauthenticated;
+                  if (isNotAuthenticated) {
+                    return _buildConnectWidget(context);
+                  } else {
+                    return _buildPaywallWidget(context);
+                  }
+                },
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPaywallWidget(BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        FlatButton(
+          textColor: Theme.of(context).accentColor,
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: Text('Share'),
+          ),
+          onPressed: () => _share(),
+        ),
+        CubitBuilder(
+          cubit: bloc,
+          builder: (context, state) {
+            final bool isPayToUnlock = state is PaywallStatePayToUnlock;
+            final bool isUnlocking = state is PaywallStateUnlocking;
+            if (isPayToUnlock) {
+              return RaisedButton(
+                color: Theme.of(context).accentColor,
+                colorBrightness: Brightness.dark,
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('Read article (\$0.05)'),
+                ),
+                onPressed: () => bloc.payToUnlock(),
+              );
+            } else if (isUnlocking) {
+              return RaisedButton(
+                color: Theme.of(context).accentColor,
+                colorBrightness: Brightness.dark,
+                child: Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Text('Paying...'),
+                ),
+                onPressed: () => bloc.payToUnlock(),
+              );
+            } else {
+              return SizedBox(
+                width: 0,
+                height: 0,
+              );
+              return Container(
+                width: 0,
+                height: 0,
+              );
+            }
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _buildConnectWidget(BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        ConnectButton(),
+      ],
     );
   }
 
@@ -256,8 +322,7 @@ class _Actions extends StatelessWidget {
             color: Theme.of(context).primaryColor,
             elevation: 4.0,
             shape: BeveledRectangleBorder(
-              borderRadius:
-                  BorderRadius.only(bottomRight: Radius.circular(16.0)),
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(16.0)),
             ),
             child: ListView.builder(
               itemCount: actions.length,
