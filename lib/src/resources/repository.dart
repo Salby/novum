@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:novum/src/resources/webhose_api_provider.dart';
+
 import './news_api_provider.dart';
 import './iex_api_provider.dart';
 import './shared_preferences_provider.dart';
@@ -8,8 +10,7 @@ import '../models/chart_model.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
 class Repository {
-
-  final newsApiProvider = NewsApiProvider();
+  final newsApiProvider = WebhoseApiProvider();
   final iexApiProvider = IexApiProvider();
   final sharedPreferencesProvider = SharedPreferencesProvider();
 
@@ -25,10 +26,10 @@ class Repository {
     final response = await iexApiProvider.symbols();
     return response;
   }
+
   /// Returns a [ChartModel] of the given symbol.
   Future<ChartModel> iexApiChart(SymbolModel symbol) async {
     final response = await iexApiProvider.chart(symbol);
     return response;
   }
-
 }

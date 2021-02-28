@@ -25,7 +25,7 @@ class NovumApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: kNovumTheme,
       title: 'Novum',
-      home: Auth(),
+      home: Browse(title: 'Front page'),
       routes: {
         '/home': (context) => Browse(title: 'Front page'),
         '/search': (context) => Search(),
