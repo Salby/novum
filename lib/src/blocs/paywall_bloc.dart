@@ -67,10 +67,16 @@ class PaywallBloc extends Cubit<PaywallState> {
     emit(PaywallStateUnlocking(article: _currentArticle));
     final String authToken = await _handCashProvider.getAuthToken();
     final account = HandCashConnect.getAccountFromAuthToken(authToken);
-    final paymentResult =
-        await account.wallet.pay(PaymentParameters(appAction: 'readArticle', description: 'Read article', receivers: [
-      PaymentRequestItem(currencyCode: 'USD', sendAmount: 0.05, destination: 'elpais'),
-    ]));
+    final paymentResult = await account.wallet.pay(
+      PaymentParameters(
+        appAction: 'read article',
+        description: 'Leer artículo',
+        receivers: [
+          PaymentRequestItem(currencyCode: 'EUR', sendAmount: 0.04, destination: 'elpais'),
+          PaymentRequestItem(currencyCode: 'EUR', sendAmount: 0.01, destination: 'news.app'),
+        ],
+      ),
+    );
     print(paymentResult);
     emit(PaywallStateUnlocked(article: _currentArticle));
   }
