@@ -2,26 +2,23 @@ import 'package:flutter/material.dart';
 import './logo.dart';
 
 class NavigationDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
-
       child: SafeArea(
         child: Column(
           children: <Widget>[
-
             // Header with logo and close button.
             DrawerHeader(),
 
             // Drawer navigatio  items.
-            DrawerItem(title: 'Front page', route: '/home'),
-            DrawerItem(title: 'Business', route: '/business'),
-            DrawerItem(title: 'Entertainment', route: '/entertainment'),
-            DrawerItem(title: 'Health', route: '/health'),
-            DrawerItem(title: 'Science', route: '/science'),
-            DrawerItem(title: 'Sports', route: '/sports'),
-            DrawerItem(title: 'Technology', route: '/technology'),
+            DrawerItem(title: 'Titulares', route: '/home'),
+            DrawerItem(title: 'Negocios', route: '/business'),
+            DrawerItem(title: 'Entretenimiento', route: '/entertainment'),
+            DrawerItem(title: 'Salud', route: '/health'),
+            DrawerItem(title: 'Ciencia', route: '/science'),
+            DrawerItem(title: 'Deportes', route: '/sports'),
+            DrawerItem(title: 'Tecnología', route: '/technology'),
 
             Spacer(),
 
@@ -29,30 +26,30 @@ class NavigationDrawer extends StatelessWidget {
               contentPadding: EdgeInsets.only(left: 34.0),
               title: Row(
                 children: <Widget>[
-                  Text('Powered by ', style: TextStyle(
-                    fontFamily: 'Libre Franklin',
-                    fontSize: 14.0,
-                    height: 0.8,
-                    color: Colors.black54,
-                  )),
-                  Text('NewsApi.org', style: TextStyle(
-                    fontFamily: 'Eczar',
-                    fontSize: 14.0,
-                  )),
+                  Text('Powered by ',
+                      style: TextStyle(
+                        fontFamily: 'Libre Franklin',
+                        fontSize: 14.0,
+                        height: 0.8,
+                        color: Colors.black54,
+                      )),
+                  Text('HandCash',
+                      style: TextStyle(
+                        fontFamily: 'Eczar',
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w600,
+                      )),
                 ],
               ),
             ),
-            
           ],
         ),
       ),
     );
   }
-
 }
 
 class DrawerHeader extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -66,16 +63,14 @@ class DrawerHeader extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class DrawerItem extends StatelessWidget {
-
   DrawerItem({
     @required this.title,
     @required this.route,
-  }) : assert(title != null),
-       assert(route != null);
+  })  : assert(title != null),
+        assert(route != null);
 
   final String title;
   final String route;
@@ -89,20 +84,18 @@ class DrawerItem extends StatelessWidget {
       title: Text(
         title,
         style: Theme.of(context).textTheme.subtitle.copyWith(
-          color: currentRoute
-            ? Colors.black54
-            : Colors.black87,
-          fontSize: 16.0,
-          fontWeight: FontWeight.w700,
-        ),
+              color: currentRoute ? Colors.black54 : Colors.black87,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w700,
+            ),
       ),
       trailing: currentRoute
-        ? Icon(
-          Icons.fiber_manual_record,
-          color: Colors.black38,
-          size: 12.0,
-        )
-        : null,
+          ? Icon(
+              Icons.fiber_manual_record,
+              color: Colors.black38,
+              size: 12.0,
+            )
+          : null,
       onTap: () => Navigator.of(context).pushReplacementNamed(route),
     );
   }
@@ -115,5 +108,4 @@ class DrawerItem extends StatelessWidget {
     });
     return isCurrentRoute;
   }
-
 }
