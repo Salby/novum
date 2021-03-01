@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class Logo extends StatelessWidget {
   Logo.full({
-    this.title = 'Novum',
+    this.title = 'News App',
   }) : fontSize = 24.0;
   Logo.compact({
     this.title: 'N',
   }) : fontSize = 26.0;
   Logo.large({
-    this.title: 'Novum',
+    this.title: 'News App',
   }) : fontSize = 34.0;
 
   final String title;
