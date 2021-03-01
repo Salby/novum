@@ -9,7 +9,6 @@ import '../../blocs/article_collection_bloc.dart';
 import 'package:newsapi_client/newsapi_client.dart';
 
 class Browse extends StatefulWidget {
-
   Browse({
     this.title,
     this.category,
@@ -21,11 +20,9 @@ class Browse extends StatefulWidget {
 
   @override
   BrowseState createState() => BrowseState();
-
 }
 
 class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
-
   /// The [_controller] controls the state of the
   /// [NovumAppBar].
   ///
@@ -44,7 +41,9 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
       duration: Duration(milliseconds: 600),
       vsync: this,
     )
-      ..addListener(() { setState(() {}); })
+      ..addListener(() {
+        setState(() {});
+      })
       ..addStatusListener((status) {
         if (status == AnimationStatus.dismissed) {
           _controller.reset();
@@ -56,25 +55,17 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final listPadding = const EdgeInsets.only(top: 67.0, bottom: 20.0);
     final Widget readMore = widget.category != null
-        ? FlatButton(
-          child: Text(
-            'Read More',
-            style: Theme.of(context).textTheme.button.copyWith(
-              fontSize: 18.0,
-            ),
-          ),
-          onPressed: () => _moreContent(),
-        )
+        ? TextButton(
+            child: Text('Leer más', style: Theme.of(context).textTheme.button.copyWith(fontSize: 18)),
+            onPressed: () => _moreContent(),
+          )
         : Container();
-    final Widget stocks = widget.category == null
-        ? IexStockData()
-        : Container();
+    final Widget stocks = widget.category == null ? IexStockData() : Container();
 
     return Scaffold(
       drawer: NavigationDrawer(),
       body: Stack(
         children: <Widget>[
-
           RefreshIndicator(
             displacement: 108.0,
             onRefresh: () => _refreshContent(),
@@ -82,22 +73,17 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
             /// The NotificationListener listens for scroll updates
             /// and determines if the app bar should expand or collapse
             /// depending on the scroll direction.
-            /// 
+            ///
             /// [_controller.reverse()] expands the app bar.
             /// [_controller.forward()] collapses the app bar.
             child: NotificationListener<ScrollUpdateNotification>(
               onNotification: (notification) {
-
                 final bool scrollingDown =
-                  notification.scrollDelta > 0
-                  && _controller.isDismissed
-                  && notification.metrics.pixels > 0.0;
-                final bool scrollingUp =
-                  notification.scrollDelta < 0
-                  && _controller.isCompleted
-                  && notification.metrics.pixels < notification.metrics.maxScrollExtent;
-                final bool overflowTop =
-                  notification.metrics.pixels < 1.0;
+                    notification.scrollDelta > 0 && _controller.isDismissed && notification.metrics.pixels > 0.0;
+                final bool scrollingUp = notification.scrollDelta < 0 &&
+                    _controller.isCompleted &&
+                    notification.metrics.pixels < notification.metrics.maxScrollExtent;
+                final bool overflowTop = notification.metrics.pixels < 1.0;
 
                 if (overflowTop) {
                   _controller.reverse();
@@ -109,52 +95,48 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
               },
               child: ListView(
                 children: <Widget>[
-
                   /// Builds list of articles from [bloc.articles].
                   /// Shows skeleton-screen if stream is empty.
                   StreamBuilder(
-                    stream: widget.bloc.articles,
-                    builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
-                      if (snapshot.hasData) {
-                        return ArticleList(
-                          snapshot.data.articles,
+                      stream: widget.bloc.articles,
+                      builder: (BuildContext context, AsyncSnapshot<ArticleCollectionModel> snapshot) {
+                        if (snapshot.hasData) {
+                          return ArticleList(
+                            snapshot.data.articles,
+                            padding: listPadding,
+                            itemCount: snapshot.data.articles.length,
+                          );
+                        }
+                        _refreshContent();
+                        return ArticleList.skeleton(
                           padding: listPadding,
-                          itemCount: snapshot.data.articles.length,
+                          itemCount: 5,
                         );
-                      }
-                      _refreshContent();
-                      return ArticleList.skeleton(
-                        padding: listPadding,
-                        itemCount: 5,
-                      );
-                    }
-                  ),
+                      }),
 
                   readMore,
 
                   Divider(),
 
                   stocks,
-
                 ],
               ),
             ),
           ),
 
           /// Custom app bar
-          /// 
+          ///
           /// Appears when [MediaQuery] is available (doesn't return 0.0).
           Align(
             alignment: Alignment.topCenter,
             child: MediaQuery.of(context).size.width == 0.0
-              ? SafeArea(child: Container(width: double.infinity, height: 56.0))
-              : NovumAppBar(
-                title: widget.title,
-                context: context,
-                controller: _controller,
-              ),
+                ? SafeArea(child: Container(width: double.infinity, height: 56.0))
+                : NovumAppBar(
+                    title: widget.title,
+                    context: context,
+                    controller: _controller,
+                  ),
           ),
-
         ],
       ),
     );
@@ -174,7 +156,7 @@ class BrowseState extends State<Browse> with SingleTickerProviderStateMixin {
   }
 
   /// Refresh content
-  /// 
+  ///
   /// Refreshes the [bloc.articles] stream.
   Future<Null> _refreshContent() async {
     Endpoint endpoint;

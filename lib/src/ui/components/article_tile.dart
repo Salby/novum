@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novum/src/blocs/paywall_bloc.dart';
 import '../../models/article_model.dart';
 import './image_placeholder.dart';
 import './fade_route.dart';
@@ -6,6 +7,12 @@ import '../screens/article.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ArticleTile extends StatelessWidget {
+  final ArticleModel article;
+  final Widget title;
+  final Widget thumbnail;
+  final Widget published;
+  final bool expanded;
+  final PaywallBloc bloc = PaywallBloc();
 
   ArticleTile({
     this.article,
@@ -15,33 +22,28 @@ class ArticleTile extends StatelessWidget {
     this.expanded,
   });
 
-  ArticleTile.fromArticleModel(ArticleModel article, BuildContext context, {bool expanded: false}) :
-    article = article,
-    title = Text(cleanTitle(article.title), style: Theme.of(context).textTheme.body1.copyWith(
-      fontSize: 16.0,
-      fontWeight: FontWeight.w500,
-    )),
-    thumbnail = article.imageUrl != null
-        ? FadeInImage.memoryNetwork(
-          image: article.imageUrl,
-          placeholder: kTransparentImage,
-          fit: BoxFit.cover,
-        )
-        : ImagePlaceholder('No image.'),
-    published = Text(
-      _timestamp(article.published),
-      style: Theme.of(context).textTheme.subtitle.copyWith(
-        color: Colors.black54,
-        fontSize: 14.0,
-      ),
-    ),
-    expanded = expanded;
-
-  final ArticleModel article;
-  final Widget title;
-  final Widget thumbnail;
-  final Widget published;
-  final bool expanded;
+  ArticleTile.fromArticleModel(ArticleModel article, BuildContext context, {bool expanded: false})
+      : article = article,
+        title = Text(cleanTitle(article.title.split('|')[0]),
+            style: Theme.of(context).textTheme.body1.copyWith(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w500,
+                )),
+        thumbnail = article.imageUrl != null
+            ? FadeInImage.memoryNetwork(
+                image: article.imageUrl,
+                placeholder: kTransparentImage,
+                fit: BoxFit.cover,
+              )
+            : ImagePlaceholder('No image.'),
+        published = Text(
+          _timestamp(article.published),
+          style: Theme.of(context).textTheme.subtitle.copyWith(
+                color: Colors.black54,
+                fontSize: 14.0,
+              ),
+        ),
+        expanded = expanded;
 
   Widget build(BuildContext context) {
     Route currentRoute;
@@ -49,12 +51,14 @@ class ArticleTile extends StatelessWidget {
       currentRoute = route;
       return true;
     });
-    final String category = currentRoute.settings.name != '/search'
-        && currentRoute.settings.name != null
-            ? currentRoute.settings.name.replaceAll('/', '')
-            : null;
+    final String category = currentRoute.settings.name != '/search' && currentRoute.settings.name != null
+        ? currentRoute.settings.name.replaceAll('/', '')
+        : null;
     return InkWell(
-      onTap: () => Navigator.push(context, FadeRoute(Article(article, category: category))),
+      onTap: () {
+        bloc.loadArticle(article);
+        Navigator.push(context, FadeRoute(Article(article, category: category)));
+      },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: expanded ? _expandedTile() : _compactTile(),
@@ -66,7 +70,6 @@ class ArticleTile extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-
         // Thumbnail.
         Flexible(
           flex: 3,
@@ -85,18 +88,11 @@ class ArticleTile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: published
-              ),
-
+              Padding(padding: const EdgeInsets.symmetric(vertical: 8.0), child: published),
               title,
-
             ],
           ),
         ),
-
       ],
     );
   }
@@ -105,24 +101,16 @@ class ArticleTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-
         Flexible(
           flex: 3,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-
-              Padding(
-                padding: const EdgeInsets.only(bottom: 6.0),
-                child: published
-              ),
-
+              Padding(padding: const EdgeInsets.only(bottom: 6.0), child: published),
               title,
-
             ],
           ),
         ),
-
         Flexible(
           flex: 1,
           child: Padding(
@@ -136,7 +124,6 @@ class ArticleTile extends StatelessWidget {
             ),
           ),
         )
-
       ],
     );
   }
@@ -153,15 +140,14 @@ class ArticleTile extends StatelessWidget {
     DateTime currentDate = DateTime.now();
     Duration difference = currentDate.difference(oldDate);
     if (difference.inSeconds < 60) {
-      timestamp = 'Now';
+      timestamp = 'Ahora';
     } else if (difference.inMinutes < 60) {
-      timestamp = '${difference.inMinutes}M';
+      timestamp = 'Hace ${difference.inMinutes} minutos';
     } else if (difference.inHours < 24) {
-      timestamp = '${difference.inHours}H';
+      timestamp = 'Hace ${difference.inHours} horas';
     } else if (difference.inDays < 30) {
-      timestamp = '${difference.inDays}D';
+      timestamp = 'Hace ${difference.inDays} días';
     }
     return timestamp;
   }
-
 }

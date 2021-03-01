@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "M54RTMK7MM.com.example.novum",
+                "paths": ["*"]
+            },
+        ]
+    }
+}
