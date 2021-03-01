@@ -24,7 +24,7 @@ class ArticleTile extends StatelessWidget {
 
   ArticleTile.fromArticleModel(ArticleModel article, BuildContext context, {bool expanded: false})
       : article = article,
-        title = Text(cleanTitle(article.title),
+        title = Text(cleanTitle(article.title.split('|')[0]),
             style: Theme.of(context).textTheme.body1.copyWith(
                   fontSize: 16.0,
                   fontWeight: FontWeight.w500,
@@ -140,13 +140,13 @@ class ArticleTile extends StatelessWidget {
     DateTime currentDate = DateTime.now();
     Duration difference = currentDate.difference(oldDate);
     if (difference.inSeconds < 60) {
-      timestamp = 'Now';
+      timestamp = 'Ahora';
     } else if (difference.inMinutes < 60) {
-      timestamp = '${difference.inMinutes}M';
+      timestamp = 'Hace ${difference.inMinutes} minutos';
     } else if (difference.inHours < 24) {
-      timestamp = '${difference.inHours}H';
+      timestamp = 'Hace ${difference.inHours} horas';
     } else if (difference.inDays < 30) {
-      timestamp = '${difference.inDays}D';
+      timestamp = 'Hace ${difference.inDays} días';
     }
     return timestamp;
   }
